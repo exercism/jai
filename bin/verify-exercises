@@ -29,7 +29,7 @@ copy_example_or_examplar_to_solution() {
 }
 
 run_tests() {
-    jai test.jai && ./test
+    jai -quiet test.jai && ./test
 }
 
 verify_exercise() {
