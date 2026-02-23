@@ -15,16 +15,29 @@
     "indent_size": 4
   },
   "files": {
-    "solution": [],
-    "test": [],
-    "example": [],
-    "exemplar": []
+    "solution": [
+      "%{snake_slug}.jai"
+    ],
+    "test": [
+      "test.jai"
+    ],
+    "example": [
+      ".meta/example.jai"
+    ],
+    "exemplar": [
+      ".meta/exemplar.jai"
+    ]
   },
   "exercises": {
-    "concept": [],
-    "practice": []
-  },
-  "concepts": [],
-  "key_features": [],
-  "tags": []
+    "practice": [
+      {
+        "slug": "hello-world",
+        "name": "Hello World",
+        "uuid": "1138be6d-50dc-4a45-9ebf-147292916c18",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 1
+      }
+    ]
+  }
 }
