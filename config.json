@@ -74,6 +74,7 @@
     "platform/mac",
     "platform/windows",
     "runtime/standalone_executable",
+    "runtime/wasmtime",
     "typing/static",
     "typing/strong",
     "used_for/games"
