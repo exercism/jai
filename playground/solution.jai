@@ -1,6 +1,3 @@
-printer :: (i: int) {
-    print("Hello, %!\n", i);
-    assert(i == 5);
+is_leap_year :: (i: int) -> bool {
+    return (i % 4 == 0) && (i % 100 != 0 || i % 400 == 0);
 }
-
-#import "Basic";

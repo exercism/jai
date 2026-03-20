@@ -1,7 +1,7 @@
 #load "solution.jai";
 
-age_is_positive :: () {
-    assert(5 > 0);
+is_leap_year_true :: () {
+    is_leap_year(2000) == true;
 } @test;
 
 // main :: () {
