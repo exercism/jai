@@ -12,24 +12,30 @@ Test :: struct {
 
 #add_context tests: [..] Test;
 #add_context test_name: string;
-#add_context skip_test: bool;
 
-assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #caller_location) #expand {
-    if context.skip_test {
-        array_add(*context.tests, Test.{name = context.test_name, outcome = .SKIPPED, message = ""});
-        return;
-    }
+add_passed_test :: inline () {
+    array_add(*context.tests, Test.{name = context.test_name, outcome = .PASSED, message = ""});
+}
 
+add_failed_test :: inline (message: string) {
+    array_add(*context.tests, Test.{name = context.test_name, outcome = .FAILED, message = message});
+}
+
+add_skipped_test :: inline () {
+    array_add(*context.tests, Test.{name = context.test_name, outcome = .SKIPPED, message = ""});
+}
+
+assert_equal :: (expected: Code, actual: Code, loc := #caller_location) #expand {
     expected_value := #insert expected;
     actual_value := #insert actual;
 
     if expected_value == actual_value {
-        array_add(*context.tests, Test.{name = context.test_name, outcome = .PASSED, message = ""});
+        add_passed_test();
         return;
     }
 
     message := sprint("Failure at %:% - Expected %, actual: %", loc.fully_pathed_filename, loc.line_number, expected_value, actual_value);
-    array_add(*context.tests, Test.{name = context.test_name, outcome = .FAILED, message = message});
+    add_failed_test(message);
 }
 
 print_report :: () {

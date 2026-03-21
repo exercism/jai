@@ -1,7 +1,7 @@
 build :: () {
     w := compiler_create_workspace("Target Program");
     if !w {
-        print("Workspace creation failed.\n");
+        print("Could not run tests.\n");
         return;
     }
 
@@ -11,7 +11,7 @@ build :: () {
 
     compiler_begin_intercept(w);
 
-    add_build_file(tprint("%tests.jai", #filepath), w);
+    add_build_file("tests.jai", w);
 
     message_loop();
 
@@ -50,26 +50,23 @@ message_loop :: () {
 
                 append(*builder, "main :: () {");
                 append(*builder, "print(\"Running tests...\\n\");");
-                // For each test procedure, generate a #run directive and
-                                // add that string to the target program.
-                                for test_procedures_to_run {
-                                    s1: = tprint("context.test_name = \"%\";\n", it.name); 
-                                    append(*builder, s1);
 
-                                    if has_note(it, "skip") {
-                                        append(*builder, "context.skip_test = true;\n");
-                                    }
+                for test_procedures_to_run {
+                    s1: = tprint("context.test_name = \"%\";\n", it.name); 
+                    append(*builder, s1);
 
-                                    s := tprint("%();", it.name);
-                                    append(*builder, s);
-                                }                
-                    ;
+                    if has_note(it, "skip") {
+                        append(*builder, "add_skipped_test();\n");
+                    } else {
+                        s := tprint("%();", it.name);
+                        append(*builder, s);
+                    }
+                }
 
-                    append(*builder, "print_report();");
-                    append(*builder, "}");
+                append(*builder, "print_report(); exit(1);");
+                append(*builder, "}");
 
                 add_build_string(builder_to_string(*builder), message.workspace);
-
                 add_build_string("#run main();", message.workspace);
 
                 array_reset(*test_procedures_to_run);
