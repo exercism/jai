@@ -34,7 +34,7 @@ message_loop :: () {
             for typechecked.procedure_headers {
               header := it.expression;
               if has_note(header, "test") {
-                  array_add(*test_procedures_to_run, header);
+                  array_add(*test_procedures, header);
               }
             }
 
@@ -51,7 +51,7 @@ message_loop :: () {
                 append(*builder, "main :: () {");
                 append(*builder, "print(\"Running tests...\\n\");");
 
-                for test_procedures_to_run {
+                for test_procedures {
                     s1: = tprint("context.test_name = \"%\";\n", it.name); 
                     append(*builder, s1);
 
@@ -69,7 +69,7 @@ message_loop :: () {
                 add_build_string(builder_to_string(*builder), message.workspace);
                 add_build_string("#run main();", message.workspace);
 
-                array_reset(*test_procedures_to_run);
+                array_reset(*test_procedures);
 
                 ran_test_procedures = true;
             }
@@ -85,7 +85,7 @@ has_note :: (header: *Code_Procedure_Header, note: string) -> bool {
     return false;
 }
 
-test_procedures_to_run: [..] *Code_Procedure_Header;
+test_procedures: [..] *Code_Procedure_Header;
 
 #import "Basic";
 #import "Compiler";
