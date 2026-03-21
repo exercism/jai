@@ -5,6 +5,7 @@ build :: () {
         return;
     }
 
+    // We'll run the tests _during compilation_, thus we don't need an output executable.
     target_options := get_build_options(w);
     target_options.output_type = .NO_OUTPUT;
     set_build_options(target_options, w);
@@ -13,7 +14,7 @@ build :: () {
 
     add_build_file("tests.jai", w);
 
-    message_loop();
+    message_loop(has_run_skipped_tests_argument(target_options));
 
     compiler_end_intercept(w);
 
@@ -22,7 +23,7 @@ build :: () {
 
 #run build();
 
-message_loop :: () {
+message_loop :: (run_skipped_tests: bool) {
     ran_test_procedures := false;
 
     while true {
@@ -32,7 +33,7 @@ message_loop :: () {
             typechecked := cast(*Message_Typechecked) message;
 
             for typechecked.procedure_headers {
-                // Prevent running tests from other loaded files
+                // Prevent running tests from files outside the exercise directory
                 if !begins_with(it.expression.location.enclosing_load.fully_pathed_filename, #filepath) {
                     continue;
                 }
@@ -45,7 +46,7 @@ message_loop :: () {
           case .PHASE;
             phase := cast(*Message_Phase) message;
             if phase.phase == .TYPECHECKED_ALL_WE_CAN {
-                // Prevent running the tests multiple times
+                // Prevent running the tests multiple times, as the compiler might emit multiple .TYPECHECKED messages for different batches of files.
                 if ran_test_procedures {
                     continue;
                 }
@@ -58,7 +59,10 @@ message_loop :: () {
 
                 for test_procedures {
                     append(*builder, tprint("context.test_name = \"%\";\n", it.name));
-                    append(*builder, tprint("context.skip_test = %;\n", skip_test(it)));
+
+                    // Skip tests annotated with @skip _unless_ the user has passed the -run_skipped_tests argument.
+                    append(*builder, tprint("context.skip_test = %;\n", !run_skipped_tests && has_note(it, "skip")));
+
                     append(*builder, tprint("%();", it.name));
                 }
 
@@ -79,12 +83,15 @@ message_loop :: () {
     }
 }
 
-skip_test :: (header: *Code_Procedure_Header) -> bool {
-    return !getenv("RUN_SKIPPED_TESTS") && has_note(header, "skip");
-}
-
 has_note :: (header: *Code_Procedure_Header, note: string) -> bool {
     for header.notes  if it.text == note  return true;
+    return false;
+}
+
+// Check if the user has passed the -run_skipped_tests argument to the compiler, 
+// which forces the test runner to execute _all_ tests, including those marked with @skip.
+has_run_skipped_tests_argument :: (target_options: Build_Options) -> bool {
+    for target_options.compile_time_command_line  if it == "-run_skipped_tests"  return true;
     return false;
 }
 
@@ -93,9 +100,3 @@ test_procedures: [..] *Code_Procedure_Header;
 #import "Basic";
 #import "Compiler";
 #import "String";
-
-#if OS == .WINDOWS {
-    #import "Windows";
-} else #if OS_IS_UNIX {
-    #import "POSIX";
-}
