@@ -41,6 +41,7 @@ message_loop :: () {
           case .PHASE;
             phase := cast(*Message_Phase) message;
             if phase.phase == .TYPECHECKED_ALL_WE_CAN {
+                // Prevent running the tests multiple times
                 if ran_test_procedures {
                     continue;
                 }
@@ -52,32 +53,30 @@ message_loop :: () {
                 append(*builder, "print(\"Running tests...\\n\");");
 
                 for test_procedures {
-                    s1: = tprint("context.test_name = \"%\";\n", it.name); 
-                    append(*builder, s1);
-
-                    if has_note(it, "skip") {
-                        append(*builder, "add_skipped_test();\n");
-                    } else {
-                        s := tprint("%();", it.name);
-                        append(*builder, s);
-                    }
+                    append(*builder, tprint("context.test_name = \"%\";\n", it.name));
+                    append(*builder, tprint("context.skip_test = %;\n", skip_test(it)));
+                    append(*builder, tprint("%();", it.name));
                 }
 
-                append(*builder, "print_report(); exit(1);");
+                append(*builder, "print_report();");
                 append(*builder, "}");
 
                 add_build_string(builder_to_string(*builder), message.workspace);
                 add_build_string("#run main();", message.workspace);
 
-                array_reset(*test_procedures);
-
                 ran_test_procedures = true;
+
+                array_reset(*test_procedures);
             }
 
           case .COMPLETE;
             break;
         }
     }
+}
+
+skip_test :: (header: *Code_Procedure_Header) -> bool {
+    return !getenv("RUN_SKIPPED_TESTS") && has_note(header, "skip");
 }
 
 has_note :: (header: *Code_Procedure_Header, note: string) -> bool {
@@ -90,3 +89,9 @@ test_procedures: [..] *Code_Procedure_Header;
 #import "Basic";
 #import "Compiler";
 #import "String";
+
+#if OS == .WINDOWS {
+    #import "Windows";
+} else #if OS_IS_UNIX {
+    #import "POSIX";
+}

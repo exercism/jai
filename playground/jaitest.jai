@@ -12,6 +12,7 @@ Test :: struct {
 
 #add_context tests: [..] Test;
 #add_context test_name: string;
+#add_context skip_test: bool;
 
 add_passed_test :: inline () {
     array_add(*context.tests, Test.{name = context.test_name, outcome = .PASSED, message = ""});
@@ -26,6 +27,11 @@ add_skipped_test :: inline () {
 }
 
 assert_equal :: (expected: Code, actual: Code, loc := #caller_location) #expand {
+    if context.skip_test {
+        add_skipped_test();
+        return;
+    }
+
     expected_value := #insert expected;
     actual_value := #insert actual;
 
@@ -39,9 +45,17 @@ assert_equal :: (expected: Code, actual: Code, loc := #caller_location) #expand 
 }
 
 print_report :: () {
+    exit_code: s32 = 0;
+
     for test: context.tests {
         print("Test '%': %, %\n", test.name, test.outcome, test.message);
-    }   
+        
+        if test.outcome == .FAILED {
+            exit_code = 1;
+        }
+    }
+
+    exit(exit_code);
 }
 
 #import "Basic";
