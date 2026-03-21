@@ -55,6 +55,11 @@ message_loop :: () {
                                 for test_procedures_to_run {
                                     s1: = tprint("context.test_name = \"%\";\n", it.name); 
                                     append(*builder, s1);
+
+                                    if has_note(it, "skip") {
+                                        append(*builder, "context.skip_test = true;\n");
+                                    }
+
                                     s := tprint("%();", it.name);
                                     append(*builder, s);
                                 }                
