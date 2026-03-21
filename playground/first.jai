@@ -51,6 +51,7 @@ message_loop :: (run_skipped_tests: bool) {
                     continue;
                 }
 
+                // Generate a main procedure that runs all test procedures, and gather the results in the context.tests array.
                 builder: String_Builder;
                 init_string_builder(*builder);
 
@@ -58,11 +59,15 @@ message_loop :: (run_skipped_tests: bool) {
                 append(*builder, "print(\"Running tests...\\n\");");
 
                 for test_procedures {
+                    // Set the context.test_name variable to the name of the currently running test, so that assert_equal 
+                    // can report it in the test results.
                     append(*builder, tprint("context.test_name = \"%\";\n", it.name));
 
                     // Skip tests annotated with @skip _unless_ the user has passed the -run_skipped_tests argument.
                     append(*builder, tprint("context.skip_test = %;\n", !run_skipped_tests && has_note(it, "skip")));
 
+                    // This is the actual test invocation. The test procedure will call assert_equal, which will report
+                    // the test result back to the compiler via the context.tests array.
                     append(*builder, tprint("%();", it.name));
                 }
 
