@@ -7,7 +7,7 @@ is_leap_year_false :: () {
 } @test @skip;
 
 is_leap_year_false2 :: () {
-    assert_equal(is_leap_year(1901), false);
+    assert_equal(is_leap_year(1901), true);
 } @test;
 
 #load "solution.jai";

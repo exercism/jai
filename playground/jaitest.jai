@@ -8,27 +8,21 @@ Test :: struct {
     name: string;
     outcome: TestOutcome;
     message: string;
+    test_code: string;
 };
 
 #add_context tests: [..] Test;
 #add_context test_name: string;
 #add_context skip_test: bool;
 
-add_passed_test :: inline () {
-    array_add(*context.tests, Test.{name = context.test_name, outcome = .PASSED, message = ""});
-}
-
-add_failed_test :: inline (message: string) {
-    array_add(*context.tests, Test.{name = context.test_name, outcome = .FAILED, message = message});
-}
-
-add_skipped_test :: inline () {
-    array_add(*context.tests, Test.{name = context.test_name, outcome = .SKIPPED, message = ""});
-}
-
-assert_equal :: (expected: Code, actual: Code, loc := #caller_location) #expand {
+assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #caller_location) #expand {
+    test_code_builder: String_Builder;
+    call_nodes := compiler_get_nodes(call);
+    print_expression(*test_code_builder, call_nodes);
+    test_code := builder_to_string(*test_code_builder);
+    
     if context.skip_test {
-        add_skipped_test();
+        array_add(*context.tests, Test.{name = context.test_name, outcome = .SKIPPED, message = "", test_code = test_code});
         return;
     }
 
@@ -36,26 +30,35 @@ assert_equal :: (expected: Code, actual: Code, loc := #caller_location) #expand 
     actual_value := #insert actual;
 
     if expected_value == actual_value {
-        add_passed_test();
+        array_add(*context.tests, Test.{name = context.test_name, outcome = .PASSED, message = "", test_code = test_code});
         return;
     }
 
-    message := sprint("Failure at %:% - Expected %, actual: %", loc.fully_pathed_filename, loc.line_number, expected_value, actual_value);
-    add_failed_test(message);
+    message := sprint("Expected: %, actual: %", expected_value, actual_value);
+    array_add(*context.tests, Test.{name = context.test_name, outcome = .FAILED, message = message, test_code = test_code});
 }
 
 print_report :: () {
-    exit_code: s32 = 0;
+    failed_tests := 0;
+    passed_tests := 0;
+    skipped_tests := 0;
 
     for test: context.tests {
-        print("Test '%': %, %\n", test.name, test.outcome, test.message);
-        
-        if test.outcome == .FAILED {
-            exit_code = 1;
+        if test.outcome == {
+             case .PASSED;
+                passed_tests += 1;
+             case .SKIPPED;
+                skipped_tests += 1;
+            case .FAILED;
+                failed_tests += 1;
+                print("Test '%' failed.\n  %\n", test.name, test.message);
         }
     }
+    print("Test summary: total: %, failed: %, succeeded: %, skipped: %\n", failed_tests + passed_tests + skipped_tests, failed_tests, passed_tests, skipped_tests);
 
-    exit(exit_code);
+    exit(cast(s32) (failed_tests > 0));
 }
 
 #import "Basic";
+#import "Compiler";
+#import "Program_Print";

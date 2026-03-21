@@ -32,10 +32,14 @@ message_loop :: () {
             typechecked := cast(*Message_Typechecked) message;
 
             for typechecked.procedure_headers {
-              header := it.expression;
-              if has_note(header, "test") {
-                  array_add(*test_procedures, header);
-              }
+                // Prevent running tests from other loaded files
+                if !begins_with(it.expression.location.enclosing_load.fully_pathed_filename, #filepath) {
+                    continue;
+                }
+
+                if has_note(it.expression, "test") {
+                    array_add(*test_procedures, it.expression);
+                }
             }
 
           case .PHASE;
