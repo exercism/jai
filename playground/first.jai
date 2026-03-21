@@ -5,7 +5,7 @@ build :: () {
         return;
     }
 
-    test_filepath := tprint("%test.jai", #filepath);
+    test_filepath := tprint("%tests.jai", #filepath);
 
     target_options := get_build_options(w);
     target_options.output_type = .NO_OUTPUT;
@@ -41,7 +41,7 @@ message_loop :: (test_filepath: string, w: Workspace) {
             message_file := cast(*Message_File) message;
 
             if message_file.fully_pathed_filename == test_filepath {
-              add_build_string("main :: () {\nprinter(5);\n}\n#run main();", w);
+              add_build_string("main :: () {\ncontext.test_name = \"is_leap_year_true\";\nis_leap_year_true();\n\n\ncontext.test_name = \"is_leap_year_false\";\nis_leap_year_false();\n\nprint_report();\n} #run main();", w);
 
               print("  Loading file '%'.\n", message_file.fully_pathed_filename);
             }

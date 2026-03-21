@@ -41,15 +41,15 @@ is_leap_year_false :: () {
     assert_equal(is_leap_year(1900), false);
 } @test;
 
-main :: () {
-    context.test_name = "is_leap_year_true";
-    is_leap_year_true();
+// main :: () {
+//     context.test_name = "is_leap_year_true";
+//     is_leap_year_true();
 
-    context.test_name = "is_leap_year_false";
-    is_leap_year_false();
+//     context.test_name = "is_leap_year_false";
+//     is_leap_year_false();
 
-    print_report();
-}
+//     print_report();
+// }
 
 #import "Basic";
 #import "Compiler";
