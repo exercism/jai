@@ -1,0 +1,98 @@
+TestOutcome :: enum u8 {
+    PASSED;
+    FAILED;
+    SKIPPED;
+}
+
+Test :: struct {
+    name: string;
+    outcome: TestOutcome;
+    message: string;
+    test_code: string;
+};
+
+#add_context tests: [..] Test;
+#add_context test_name: string;
+#add_context skip_test: bool;
+
+assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #caller_location) #expand {
+    test_code_builder: String_Builder;
+    call_nodes := compiler_get_nodes(call);
+    print_expression(*test_code_builder, call_nodes);
+    test_code := builder_to_string(*test_code_builder);
+    
+    if context.skip_test {
+        array_add(*context.tests, Test.{name = context.test_name, outcome = .SKIPPED, message = "", test_code = test_code});
+        return;
+    }
+
+    expected_value := #insert expected;
+    actual_value := #insert actual;
+
+    if expected_value == actual_value {
+        array_add(*context.tests, Test.{name = context.test_name, outcome = .PASSED, message = "", test_code = test_code});
+        return;
+    }
+
+    message := sprint("Expected: %, actual: %", expected_value, actual_value);
+    array_add(*context.tests, Test.{name = context.test_name, outcome = .FAILED, message = message, test_code = test_code});
+}
+
+print_report :: () {
+    failed_tests := 0;
+    passed_tests := 0;
+    skipped_tests := 0;
+
+    for test: context.tests {
+        if test.outcome == {
+             case .PASSED;
+                passed_tests += 1;
+             case .SKIPPED;
+                skipped_tests += 1;
+            case .FAILED;
+                failed_tests += 1;
+                print("Test '%' failed.\n  %\n", test.name, test.message);
+        }
+    }
+    print("Test summary: total: %, failed: %, succeeded: %, skipped: %\n", failed_tests + passed_tests + skipped_tests, failed_tests, passed_tests, skipped_tests);
+
+    exit(cast(s32) (failed_tests > 0));
+}
+
+has_note :: (header: *Code_Procedure_Header, note: string) -> bool {
+    for header.notes  if it.text == note  return true;
+    return false;
+}
+
+run_tests :: (test_procedures: [] Code) -> string {
+    print("Running tests...\n");
+
+    run_tests_builder: String_Builder;
+    init_string_builder(*run_tests_builder);
+
+    for test_procedure: test_procedures {
+        _, test_procedure_nodes := compiler_get_nodes(test_procedure);
+
+        test_procedure_name: string;
+        test_procedure_has_skip_note: bool;
+
+        for test_procedure_node: test_procedure_nodes {
+            if test_procedure_node.kind == .PROCEDURE_HEADER {
+                test_procedure_header := cast(*Code_Procedure_Header)test_procedure_node;
+                test_procedure_name = test_procedure_header.name;
+                test_procedure_has_skip_note = has_note(test_procedure_header, "skip");
+                break;
+            }
+        }
+
+        append(*run_tests_builder, tprint("context.test_name = \"%\";\n", test_procedure_name));
+        append(*run_tests_builder, tprint("context.skip_test = %;\n", test_procedure_has_skip_note));
+        append(*run_tests_builder, tprint("%();", test_procedure_name));
+    }
+
+    return builder_to_string(*run_tests_builder);
+}
+
+#import "Basic";
+#import "Compiler";
+#import "Program_Print";
