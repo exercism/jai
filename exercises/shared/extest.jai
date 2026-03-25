@@ -1,3 +1,7 @@
+// Jai, being a very young language, doesn't have a built-in testing framework.
+// This file provides basic testing functionality that can be used in exercises 
+// to run the tests and print a report of which tests passed and which failed.
+
 assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #caller_location) #expand {
     test_name := #procedure_name();
 
@@ -6,6 +10,8 @@ assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #cal
     test_code := builder_to_string(*test_code_builder);
 
     if context.skip_test && !running_in_test_runner() {
+        // We do not `#insert` the `expected` and `actual` values here, since the test is being 
+        // skipped and we don't want to evaluate them at all.
         add_test_result(test_name, .SKIPPED, "", test_code);
         return;
     }
@@ -51,10 +57,10 @@ finished_running_tests :: () {
 }
 
 write_json_test_report :: () {
-    failed_tests, passed_tests, skipped_tests := 0;
+    // As there is no built-in JSON support in Jai, we manually build a JSON string.
     json_builder: String_Builder;
     append(*json_builder, "{\n");
-    append(*json_builder, "  \"version\": 3,\n");
+    append(*json_builder, "  \"version\": 2,\n");
     append(*json_builder, tprint("  \"status\": \"%\",\n", test_status_to_string(context.test_run.status)));
     append(*json_builder, "  \"tests\": [\n");
 
@@ -110,11 +116,11 @@ print_test_report :: () {
     print("Test summary: total: %, failed: %, succeeded: %, skipped: %\n", failed_tests + passed_tests + skipped_tests, failed_tests, passed_tests, skipped_tests);
 }
 
-running_in_test_runner :: () -> bool {
+running_in_test_runner :: inline () -> bool {
     return has_build_option("-test_runner");
 }
 
-has_build_option :: (arg: string) -> bool {
+has_build_option :: inline (arg: string) -> bool {
     for get_build_options().compile_time_command_line  if it == arg  return true;
     return false;
 }
