@@ -18,7 +18,7 @@ assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #cal
     array_add(*context.tests, Test.{name, outcome, message, test_code});
 }
 
-run_test :: (code: Code) #expand {
+run_test :: (code: Code, skip := false) #expand {
     context.test_name = #procedure_name();
     #insert code;
 }
@@ -44,6 +44,7 @@ print_test_report :: () {
 TestOutcome :: enum u8 {
     PASSED;
     FAILED;
+    SKIPPED;
 }
 
 Test :: struct {
