@@ -21,40 +21,15 @@ assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #cal
     array_add(*context.tests, Test.{name = context.test_name, outcome = .FAILED, message = message, test_code = test_code});
 }
 
-run_tests :: (test_procedures: [] Code) -> string {
-    print("Running tests...\n");
-
-    run_skipped_tests := has_compiler_option("-run_skipped_tests");
-
-    run_tests_builder: String_Builder;
-    init_string_builder(*run_tests_builder);
-
-    for test_procedure: test_procedures {
-        _, test_procedure_nodes := compiler_get_nodes(test_procedure);
-
-        test_procedure_name: string;
-        test_procedure_has_skip_note: bool;
-
-        for test_procedure_node: test_procedure_nodes {
-            if test_procedure_node.kind == .PROCEDURE_HEADER {
-                test_procedure_header := cast(*Code_Procedure_Header)test_procedure_node;
-                test_procedure_name = test_procedure_header.name;
-                test_procedure_has_skip_note = !run_skipped_tests && has_note(test_procedure_header, "skip");
-                break;
-            }
-        }
-
-        append(*run_tests_builder, tprint("context.test_name = \"%\";\n", test_procedure_name));
-        append(*run_tests_builder, tprint("context.skip_test = %;\n", test_procedure_has_skip_note));
-        append(*run_tests_builder, tprint("%();", test_procedure_name));
-    }
-
-    append(*run_tests_builder, "print_report();");
-
-    return builder_to_string(*run_tests_builder);
+run_test :: (code: Code) #expand {
+    root := compiler_get_nodes(code);
+    call := cast(*Code_Procedure_Call)root;
+    expr := cast(*Code_Ident)call.procedure_expression;
+    context.test_name = expr.name;
+    #insert code;
 }
 
-print_report :: () {
+print_test_report :: () {
     failed_tests := 0;
     passed_tests := 0;
     skipped_tests := 0;

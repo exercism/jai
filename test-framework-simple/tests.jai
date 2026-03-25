@@ -4,18 +4,17 @@ is_leap_year_true :: () {
 
 is_leap_year_false :: () {
     assert_equal(is_leap_year(1900), false);
-} @skip
+}
 
 is_leap_year_false2 :: () {
     assert_equal(is_leap_year(1901), true);
-} @skip
+}
 
 main :: () {
-    #insert #run run_tests(.[
-        is_leap_year_true(), 
-        is_leap_year_false(), 
-        is_leap_year_false2()
-    ]);
+    run_test(is_leap_year_true());
+    run_test(is_leap_year_false());
+    run_test(is_leap_year_false2());
+    print_test_report();
 }
 
 #run main();
