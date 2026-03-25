@@ -29,111 +29,111 @@
 }
 
 one_is_i :: () {
-    assert_equal("I", 1);
+    assert_equal("I", to_roman(1));
 }
 
 two_is_ii :: () {
-    assert_equal("II", 2);
+    assert_equal("II", to_roman(2));
 }
 
 three_is_iii :: () {
-    assert_equal("III", 3);
+    assert_equal("III", to_roman(3));
 }
 
 four_is_iv :: () {
-    assert_equal("IV", 4);
+    assert_equal("IV", to_roman(4));
 }
 
 five_is_v :: () {
-    assert_equal("V", 5);
+    assert_equal("V", to_roman(5));
 }
 
 six_is_vi :: () {
-    assert_equal("VI", 6);
+    assert_equal("VI", to_roman(6));
 }
 
 nine_is_ix :: () {
-    assert_equal("IX", 9);
+    assert_equal("IX", to_roman(9));
 }
 
 sixteen_is_xvi :: () {
-    assert_equal("XVI", 16);
+    assert_equal("XVI", to_roman(16));
 }
 
 twenty_seven_is_xxvii :: () {
-    assert_equal("XXVII", 27);
+    assert_equal("XXVII", to_roman(27));
 }
 
 forty_eight_is_xlviii :: () {
-    assert_equal("XLVIII", 48);
+    assert_equal("XLVIII", to_roman(48));
 }
 
 forty_nine_is_xlix :: () {
-    assert_equal("XLIX", 49);
+    assert_equal("XLIX", to_roman(49));
 }
 
 fifty_nine_is_lix :: () {
-    assert_equal("LIX", 59);
+    assert_equal("LIX", to_roman(59));
 }
 
 sixty_six_is_lxvi :: () {
-    assert_equal("LXVI", 66);
+    assert_equal("LXVI", to_roman(66));
 }
 
 ninety_three_is_xciii :: () {
-    assert_equal("XCIII", 93);
+    assert_equal("XCIII", to_roman(93));
 }
 
 one_hundred_and_forty_one_is_cxli :: () {
-    assert_equal("CXLI", 141);
+    assert_equal("CXLI", to_roman(141));
 }
 
 one_hundred_and_sixty_three_is_clxiii :: () {
-    assert_equal("CLXIII", 163);
+    assert_equal("CLXIII", to_roman(163));
 }
 
 one_hundred_and_sixty_six_is_clxvi :: () {
-    assert_equal("CLXVI", 166);
+    assert_equal("CLXVI", to_roman(166));
 }
 
 four_hundred_and_two_is_cdii :: () {
-    assert_equal("CDII", 402);
+    assert_equal("CDII", to_roman(402));
 }
 
 five_hundred_and_seventy_five_is_dlxxv :: () {
-    assert_equal("DLXXV", 575);
+    assert_equal("DLXXV", to_roman(575));
 }
 
 six_hundred_and_sixty_six_is_dclxvi :: () {
-    assert_equal("DCLXVI", 666);
+    assert_equal("DCLXVI", to_roman(666));
 }
 
 nine_hundred_and_eleven_is_cmxi :: () {
-    assert_equal("CMXI", 911);
+    assert_equal("CMXI", to_roman(911));
 }
 
 one_thousand_and_twenty_four_is_mxxiv :: () {
-    assert_equal("MXXIV", 1024);
+    assert_equal("MXXIV", to_roman(1024));
 }
 
 one_thousand_six_hundred_and_sixty_six_is_mdclxvi :: () {
-    assert_equal("MDCLXVI", 1666);
+    assert_equal("MDCLXVI", to_roman(1666));
 }
 
 three_thousand_is_mmm :: () {
-    assert_equal("MMM", 3000);
+    assert_equal("MMM", to_roman(3000));
 }
 
 three_thousand_and_one_is_mmmi :: () {
-    assert_equal("MMMI", 3001);
+    assert_equal("MMMI", to_roman(3001));
 }
 
 three_thousand_eight_hundred_and_eighty_eight_is_mmmdccclxxxviii :: () {
-    assert_equal("MMMDCCCLXXXVIII", 3888);
+    assert_equal("MMMDCCCLXXXVIII", to_roman(3888));
 }
 
 three_thousand_nine_hundred_and_ninety_nine_is_mmmcmxcix :: () {
-    assert_equal("MMMCMXCIX", 3999);
+    assert_equal("MMMCMXCIX", to_roman(3999));
 }
 
 #run {
