@@ -1,11 +1,19 @@
-    main :: () {
+    // main :: () {
+    //     true_test();
+    //     skip(false_test());
+    //     skip(skipped_test());
+    //     finished_running_tests();
+    // }
+
+    #run {
         true_test();
         skip(false_test());
         skip(skipped_test());
-        finished_running_tests();
     }
 
-    #run main();
+    #run {
+        finished_running_tests();
+    }
 
     true_test :: () {
         assert_equal(3, add(1, 2));

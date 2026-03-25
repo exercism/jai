@@ -1,19 +1,23 @@
-main :: () {
+#run {
     no_name_given();
-    test_a_name_given();
-    another_name_given();
+    skip(test_a_name_given());
+    skip(another_name_given());
 }
 
 no_name_given :: () {
-	assert(two_fer() == "One for you, one for me.");
+    assert_equal("One for you, one for me.", two_fer());
 }
 
 test_a_name_given :: () {
-	assert(two_fer("Alice") == "One for Alice, one for me.");
+    assert_equal("One for Alice, one for me.", two_fer("Alice"));
 }
 
 another_name_given :: () {
-	assert(two_fer("Bob") == "One for Bob, one for me.");
+    assert_equal("One for Bob, one for me.", two_fer("Bob"));
+}
+
+#run {
+    finished_running_tests();
 }
 
 #load "solution.jai";

@@ -1,5 +1,9 @@
-main :: () {
-    assert(hello() == "Hello, World!");
+#run {
+    assert_equal("Hello, World!", hello());
+}
+
+#run {
+    finished_running_tests();
 }
 
 #load "solution.jai";
