@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Synopsis:
+# Copy the latest extest.jai file to each exercise's test directory as test.jai.
+# This is useful when you have made changes to the extest.jai file and want to
+# ensure that all exercises are using the latest version.
+
+# Example: copy latest extest.jai to all exercises
+# bin/copy-latest-extest-to-exercises
+
+set -eo pipefail
+
+for exercise_dir in ./exercises/{concept,practice}/*/; do
+    if [[ -d "${exercise_dir}" ]]; then
+        cp ./exercises/shared/extest.jai "${exercise_dir}/extest.jai"
+    fi
+done
