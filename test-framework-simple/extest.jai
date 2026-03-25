@@ -1,11 +1,11 @@
-assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #caller_location) #expand {
+assert_equal :: (expected: Code, actual: Code, skip := false, call := #caller_code, loc := #caller_location) #expand {
     test_name := #procedure_name();
 
     test_code_builder: String_Builder;
     print_expression(*test_code_builder, compiler_get_nodes(call));
     test_code := builder_to_string(*test_code_builder);
 
-    if context.skip_test {
+    if skip && !running_in_test_runner() {
         add_test_result(test_name, .SKIPPED, "", test_code);
         return;
     }
@@ -19,12 +19,6 @@ assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #cal
         message := sprint("Expected: %, actual: %", expected_value, actual_value);
         add_test_result(test_name, .FAILED, message, test_code);
     }
-}
-
-run_test :: (code: Code, skip := false) #expand {
-    context.skip_test = skip && !running_in_test_runner();
-
-    #insert code;
 }
 
 add_test_result :: inline (test_name: string, status: TestStatus, message: string, test_code: string) {
@@ -132,7 +126,7 @@ TestResult :: struct {
 };
 
 TestRun :: struct {
-    version := 3;
+    version := 2;
     status := TestStatus.PASSED;
     tests: [..] TestResult;
 };
