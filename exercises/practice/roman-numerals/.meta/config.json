@@ -4,13 +4,16 @@
   ],
   "files": {
     "solution": [
-      "roman_numerals.jai"
+      "solution.jai"
     ],
     "test": [
-      "test.jai"
+      "tests.jai"
     ],
     "example": [
       ".meta/example.jai"
+    ],
+    "invalidator": [
+      "extest.jai"
     ]
   },
   "blurb": "Convert modern Arabic numbers into Roman numerals.",

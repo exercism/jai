@@ -4,13 +4,16 @@
   ],
   "files": {
     "solution": [
-      "two_fer.jai"
+      "solution.jai"
     ],
     "test": [
-      "test.jai"
+      "tests.jai"
     ],
     "example": [
       ".meta/example.jai"
+    ],
+    "invalidator": [
+      "extest.jai"
     ]
   },
   "blurb": "Create a sentence of the form \"One for X, one for me.\".",

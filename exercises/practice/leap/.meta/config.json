@@ -4,13 +4,16 @@
   ],
   "files": {
     "solution": [
-      "leap.jai"
+      "solution.jai"
     ],
     "test": [
-      "test.jai"
+      "tests.jai"
     ],
     "example": [
       ".meta/example.jai"
+    ],
+    "invalidator": [
+      "extest.jai"
     ]
   },
   "blurb": "Determine whether a given year is a leap year.",
