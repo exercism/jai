@@ -21,9 +21,14 @@ assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #cal
 
 run_test :: (code: Code, skip := false) #expand {
     context.test_name = #procedure_name();
-    context.skip_test = skip;
+    context.skip_test = skip && !has_build_option("-run_skipped_tests");
 
     #insert code;
+}
+
+has_build_option :: (arg: string) -> bool {
+    for get_build_options().compile_time_command_line  if it == arg  return true;
+    return false;
 }
 
 add_test_result :: (test_name: string, outcome: TestOutcome, message: string, test_code: string) {
