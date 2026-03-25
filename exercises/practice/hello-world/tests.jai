@@ -1,7 +1,6 @@
-#load "hello_world.jai";
-
-#import "Basic";
-
 main :: () {
     assert(hello() == "Hello, World!");
 }
+
+#load "solution.jai";
+#load "extest.jai";

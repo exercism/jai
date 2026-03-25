@@ -1,7 +1,3 @@
-#load "two_fer.jai";
-
-#import "Basic";
-
 main :: () {
     no_name_given();
     test_a_name_given();
@@ -19,3 +15,6 @@ test_a_name_given :: () {
 another_name_given :: () {
 	assert(two_fer("Bob") == "One for Bob, one for me.");
 }
+
+#load "solution.jai";
+#load "extest.jai";

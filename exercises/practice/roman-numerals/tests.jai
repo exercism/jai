@@ -1,7 +1,3 @@
-#load "roman_numerals.jai";
-
-#import "Basic";
-
 main :: () {
     one_is_i();
     two_is_ii();
@@ -139,3 +135,6 @@ three_thousand_eight_hundred_and_eighty_eight_is_mmmdccclxxxviii :: () {
 three_thousand_nine_hundred_and_ninety_nine_is_mmmcmxcix :: () {
     assert(to_roman(3999) == "MMMCMXCIX");
 }
+
+#load "solution.jai";
+#load "extest.jai";

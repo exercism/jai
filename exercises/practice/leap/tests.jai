@@ -1,7 +1,3 @@
-#load "leap.jai";
-
-#import "Basic";
-
 main :: () {
     year_not_divisible_by_4_in_common_year();
     year_divisible_by_2_not_divisible_by_4_in_common_year();
@@ -49,3 +45,6 @@ year_divisible_by_400_but_not_by_125_is_still_a_leap_year :: () {
 year_divisible_by_200_not_divisible_by_400_in_common_year :: () {
     assert(!is_leap_year(1800));
 }
+
+#load "solution.jai";
+#load "extest.jai";
