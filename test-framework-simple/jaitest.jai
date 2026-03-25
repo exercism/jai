@@ -49,6 +49,8 @@ run_tests :: (test_procedures: [] Code) -> string {
         append(*run_tests_builder, tprint("%();", test_procedure_name));
     }
 
+    append(*run_tests_builder, "print_report();");
+
     return builder_to_string(*run_tests_builder);
 }
 

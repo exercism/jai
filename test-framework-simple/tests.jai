@@ -16,7 +16,6 @@ main :: () {
         is_leap_year_false(), 
         is_leap_year_false2()
     ]);
-    print_report();
 }
 
 #run main();
