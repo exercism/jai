@@ -4,13 +4,16 @@
   ],
   "files": {
     "solution": [
-      "hello_world.jai"
+      "solution.jai"
     ],
     "test": [
-      "test.jai"
+      "tests.jai"
     ],
     "example": [
       ".meta/example.jai"
+    ],
+    "invalidator": [
+      "extest.jai"
     ]
   },
   "blurb": "Exercism's classic introductory exercise. Just say \"Hello, World!\".",

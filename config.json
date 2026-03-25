@@ -16,16 +16,19 @@
   },
   "files": {
     "solution": [
-      "%{snake_slug}.jai"
+      "solution.jai"
     ],
     "test": [
-      "test.jai"
+      "tests.jai"
     ],
     "example": [
       ".meta/example.jai"
     ],
     "exemplar": [
       ".meta/exemplar.jai"
+    ],
+    "invalidator": [
+      "extest.jai"
     ]
   },
   "exercises": {
