@@ -7,5 +7,5 @@ bin/latest-configlet.zip
 bin/configlet.zip
 
 test
-test.dSYM/
+*.dSYM/
 .build/
