@@ -1,22 +1,22 @@
 main :: () {
-    run_test(is_leap_year_true());
-    run_test(is_leap_year_false(), skip = true);
-    run_test(is_leap_year_false2(), skip = true);
-    print_test_report();
+    run_test(true_test());
+    run_test(false_test(), skip = true);
+    run_test(skipped_test(), skip = true);
+    finished_running_tests();
 }
 
 #run main();
 
-is_leap_year_true :: () {
-    assert_equal(true, is_leap_year(2000));
+true_test :: () {
+    assert_equal(3, add(1, 2));
 }
 
-is_leap_year_false :: () {
-    assert_equal(false, is_leap_year(1900));
+false_test :: () {
+    assert_equal(2, add(3, 4));
 }
 
-is_leap_year_false2 :: () {
-    assert_equal(false, is_leap_year(1901));
+skipped_test :: () {
+    assert_equal(1, add(1, 1));
 }
 
 #load "solution.jai";

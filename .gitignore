@@ -9,3 +9,4 @@ bin/configlet.zip
 test
 *.dSYM/
 .build/
+results.json

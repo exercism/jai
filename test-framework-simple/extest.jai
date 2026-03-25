@@ -1,10 +1,12 @@
 assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #caller_location) #expand {
+    test_name := #procedure_name();
+
     test_code_builder: String_Builder;
     print_expression(*test_code_builder, compiler_get_nodes(call));
     test_code := builder_to_string(*test_code_builder);
 
     if context.skip_test {
-        add_test_result(context.test_name, .SKIPPED, "", test_code);
+        add_test_result(test_name, .SKIPPED, "", test_code);
         return;
     }
 
@@ -12,34 +14,89 @@ assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #cal
     actual_value   := #insert actual;
 
     if expected_value == actual_value {
-        add_test_result(context.test_name, .PASSED, "", test_code);
+        add_test_result(test_name, .PASSED, "", test_code);
     } else {
         message := sprint("Expected: %, actual: %", expected_value, actual_value);
-        add_test_result(context.test_name, .FAILED, message, test_code);
+        add_test_result(test_name, .FAILED, message, test_code);
     }
 }
 
 run_test :: (code: Code, skip := false) #expand {
-    context.test_name = #procedure_name();
-    context.skip_test = skip && !has_build_option("-run_skipped_tests");
+    context.skip_test = skip && !running_in_test_runner();
 
     #insert code;
 }
 
-has_build_option :: (arg: string) -> bool {
-    for get_build_options().compile_time_command_line  if it == arg  return true;
-    return false;
+add_test_result :: inline (test_name: string, status: TestStatus, message: string, test_code: string) {
+    array_add(*context.test_run.tests, .{test_name, status, message, test_code});
+
+    if status == .FAILED {
+        context.test_run.status = .FAILED;
+    }
 }
 
-add_test_result :: (test_name: string, outcome: TestOutcome, message: string, test_code: string) {
-    array_add(*context.tests, .{test_name, outcome, message, test_code});
+finished_running_tests :: () {
+    if running_in_test_runner() {
+        write_json_test_report();
+    } else {
+        print_test_report();
+    }
+
+    if context.test_run.status == .FAILED {
+        exit(1);
+    } else {
+        exit(0);
+    }
+}
+
+write_json_test_report :: () {
+    failed_tests, passed_tests, skipped_tests := 0;
+    json_builder: String_Builder;
+    append(*json_builder, "{\n");
+    append(*json_builder, "  \"version\": 3,\n");
+    append(*json_builder, tprint("  \"status\": \"%\",\n", test_status_to_string(context.test_run.status)));
+    append(*json_builder, "  \"tests\": [\n");
+
+    for context.test_run.tests {
+        append(*json_builder, "    {\n");
+        append(*json_builder, tprint("      \"name\": \"%\",\n", it.name));
+        append(*json_builder, tprint("      \"status\": \"%\",\n", test_status_to_string(it.status)));
+        if it.message.count > 0 {
+            append(*json_builder, tprint("      \"message\": \"%\",\n", it.message));
+        }
+        append(*json_builder, tprint("      \"test_code\": \"%\"\n", it.test_code));
+        append(*json_builder, "    }");
+        if it_index < context.test_run.tests.count - 1 {
+            append(*json_builder, ",");
+        }
+        append(*json_builder, "\n");
+    }
+
+    append(*json_builder, "  ]\n");
+    append(*json_builder, "}\n");
+
+    json := builder_to_string(*json_builder);
+    write_entire_file("results.json", json);
+}
+
+test_status_to_string :: inline (status: TestStatus) -> string {
+    if status == {
+        case .PASSED;
+            return "pass";
+        case .FAILED;
+            return "fail";
+        case .SKIPPED;
+            return "skip";
+        case;
+            return "error";
+    };
 }
 
 print_test_report :: () {
     failed_tests, passed_tests, skipped_tests := 0;
 
-    for test: context.tests {
-        if test.outcome == {
+    for test: context.test_run.tests {
+        if test.status == {
             case .PASSED;
                 passed_tests += 1;
             case .FAILED;
@@ -50,11 +107,18 @@ print_test_report :: () {
         }
     }
     print("Test summary: total: %, failed: %, succeeded: %, skipped: %\n", failed_tests + passed_tests + skipped_tests, failed_tests, passed_tests, skipped_tests);
-
-    exit(cast(s32) (failed_tests > 0));
 }
 
-TestOutcome :: enum u8 {
+running_in_test_runner :: () -> bool {
+    return has_build_option("-test_runner");
+}
+
+has_build_option :: (arg: string) -> bool {
+    for get_build_options().compile_time_command_line  if it == arg  return true;
+    return false;
+}
+
+TestStatus :: enum u8 {
     PASSED;
     FAILED;
     SKIPPED;
@@ -62,15 +126,21 @@ TestOutcome :: enum u8 {
 
 TestResult :: struct {
     name: string;
-    outcome: TestOutcome;
+    status: TestStatus;
     message: string;
     test_code: string;
 };
 
-#add_context tests: [..] TestResult;
-#add_context test_name: string;
+TestRun :: struct {
+    version := 3;
+    status := TestStatus.PASSED;
+    tests: [..] TestResult;
+};
+
+#add_context test_run: TestRun;
 #add_context skip_test: bool;
 
 #import "Basic";
 #import "Compiler";
+#import "File";
 #import "Program_Print";
