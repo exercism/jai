@@ -12,6 +12,6 @@ set -eo pipefail
 
 for exercise_dir in ./exercises/{concept,practice}/*/; do
     if [[ -d "${exercise_dir}" ]]; then
-        cp ./exercises/shared/extest.jai "${exercise_dir}/extest.jai"
+        cp ./exercises/shared/extest/extest.jai "${exercise_dir}/extest.jai"
     fi
 done
