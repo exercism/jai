@@ -1,0 +1,48 @@
+TestCase :: struct {
+    name: string;
+    body: string;
+}
+
+build_test_file_contents :: (test_cases: [] TestCase) -> string {
+    builder: String_Builder;
+
+    append(*builder, "#run {\n");
+    for test_case: test_cases {
+        if it_index == 0 {
+            append(*builder, tprint("    %();\n", test_case.name));
+        } else {
+            append(*builder, tprint("    skip(%());\n", test_case.name));
+        }
+    }
+    append(*builder, "}\n");
+
+    for test_case: test_cases {
+        append(*builder, tprint("\n% :: () {\n    %\n}\n", test_case.name, test_case.body));
+    }
+
+    append(*builder, #string END
+
+#run {
+    finished_running_tests();
+}
+
+#load "solution.jai";
+#load "extest.jai";
+    END);
+
+    return builder_to_string(*builder);
+}
+
+generate_test_file :: (test_cases: [] TestCase) {
+    test_file_contents := build_test_file_contents(test_cases);
+    write_entire_file("../tests.jai", test_file_contents);
+
+    // Do no create an executable for this module, since it's meant to be at compile-time
+    set_build_options_dc(.{do_output=false});
+}
+
+#import "Basic";
+#import "Compiler";
+#import "File";
+#import "Hash_Table";
+#import "String";

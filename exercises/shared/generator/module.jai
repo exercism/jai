@@ -12,3 +12,4 @@ download_canonical_data :: (exercise: string) -> CanonicalData {
 #import "Basic";
 #import,file "canonical_data.jai";
 #import,file "problem_specifications.jai";
+#import,file "tests_file.jai";
