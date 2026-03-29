@@ -10,3 +10,4 @@ test
 *.dSYM/
 .build/
 results.json
+.problem-specifications/
