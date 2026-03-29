@@ -1,22 +1,22 @@
 WHITESPACE_CHARS :: " \t\n\r";
 
 JSON_Type :: enum u8 {
-    NULL :: 0;
+    NULL    :: 0;
     BOOLEAN :: 1;
-    NUMBER :: 2;
-    STRING :: 3;
-    ARRAY :: 4;
-    OBJECT :: 5;
+    NUMBER  :: 2;
+    STRING  :: 3;
+    ARRAY   :: 4;
+    OBJECT  :: 5;
 }
 
 JSON_Value :: struct {
     type: JSON_Type;
     union {
         boolean: bool;
-        number: float64;
-        str: string;
-        array: [] JSON_Value;
-        object: *JSON_Object;
+        number:  float64;
+        str:     string;
+        array:   []JSON_Value;
+        object:  *JSON_Object;
     };
 }
 
@@ -43,45 +43,6 @@ json_parse_string :: (content: string) -> success: bool, JSON_Value {
     }
 
     return true, value;
-}
-
-json_parse_file :: (filename: string) -> success: bool, JSON_Value {
-    file_data, ok := read_entire_file(filename);
-    value: JSON_Value;
-
-    if !ok {
-        log_error("Could not read file: %", filename);
-        return false, value;
-    }
-    defer free(file_data);
-
-    parsed_ok, parsed_value := json_parse_string(file_data);
-    return parsed_ok, parsed_value;
-}
-
-json_free :: (using val: JSON_Value) {
-    if #complete type == {
-        case .NULL;
-        case .BOOLEAN;
-        case .NUMBER;
-
-        case .STRING;
-            free(str);
-
-        case .ARRAY;
-            for array {
-                json_free(it);
-            }
-            array_free(array);
-
-        case .OBJECT;
-            for object {
-                free(it_index);
-                json_free(it);
-            }
-            deinit(object);
-            free(object);
-    }
 }
 
 parse_value :: (to_parse: string) -> JSON_Value, string, bool {
