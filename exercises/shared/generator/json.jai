@@ -23,9 +23,13 @@ JSON_Value :: struct {
 JSON_Object :: Table(string, JSON_Value);
 
 json_get_property :: (value: *JSON_Value, property: string) -> JSON_Value {
-    if value.type != .OBJECT return .{};
+    assert(value != null);
+    assert(value.type == .OBJECT);
+
     obj := value.object;
     ptr := table_find_pointer(obj, property);
+    
+    assert(ptr != null);
     if ptr == null return .{};
     return (.*)ptr;
 }
