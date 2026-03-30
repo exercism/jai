@@ -33,7 +33,7 @@ build_test_file_contents :: (test_cases: [] TestCase) -> string {
     return builder_to_string(*builder);
 }
 
-generate_test_file :: (test_cases: [] TestCase) {
+generate_test_file_from_test_cases :: (test_cases: [] TestCase) {
     test_file_contents := build_test_file_contents(test_cases);
     write_entire_file("../tests.jai", test_file_contents);
 

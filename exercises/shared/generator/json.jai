@@ -22,16 +22,35 @@ JSON_Value :: struct {
 
 JSON_Object :: Table(string, JSON_Value);
 
-json_get_property :: (value: *JSON_Value, property: string) -> JSON_Value {
-    assert(value != null);
-    assert(value.type == .OBJECT);
+json_get_boolean_property :: (value: *JSON_Object, property: string) -> bool {
+    json_value := json_get_property(value, property);
+    assert(json_value.type == .BOOLEAN);
+    return json_value.boolean;
+}
 
-    obj := value.object;
-    ptr := table_find_pointer(obj, property);
-    
-    assert(ptr != null);
-    if ptr == null return .{};
-    return (.*)ptr;
+json_get_number_property :: (value: *JSON_Object, property: string) -> float64 {
+    json_value := json_get_property(value, property);
+    assert(json_value.type == .NUMBER);
+    return json_value.number;
+}
+
+json_get_string_property :: (value: *JSON_Object, property: string) -> string {
+    json_value := json_get_property(value, property);
+    assert(json_value.type == .STRING);
+    return json_value.str;
+}
+
+json_get_array_property :: (value: *JSON_Object, property: string) -> []JSON_Value {
+    json_value := json_get_property(value, property);
+    assert(json_value.type == .ARRAY);
+    return json_value.array;
+}
+
+json_get_property :: (value: *JSON_Value, property: string) -> JSON_Value {
+    assert(value != null && value.type == .OBJECT);
+    result, property := table_find(value.object, property);
+    assert(result);
+    return result;
 }
 
 json_parse_string :: (content: string) -> success: bool, JSON_Value {

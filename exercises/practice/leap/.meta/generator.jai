@@ -4,15 +4,13 @@
 #import,file "../../../shared/generator/module.jai";
 #import,file "../../../shared/generator/tests_file.jai";
 
-generate_tests :: () {
+generate_test_files :: () {
     canonical := download_canonical_data("leap");
 
     test_cases: [..] TestCase;
     for canonical_case: canonical.cases {
         expected := canonical_case.expected.boolean;
-        year_ptr := table_find_pointer(canonical_case.input.object, "year");
-        assert(year_ptr != null);
-        year := ((.*)year_ptr).number;
+        year := json_get_number_property(canonical_case.input.object, "year");
 
         test_case := TestCase.{
             name = replace(replace(replace(replace(replace(canonical_case.full_description, " ", "_"), "-", "_"), ".", "_"), ",", "_"), "__", "_"),
@@ -21,7 +19,7 @@ generate_tests :: () {
         array_add(*test_cases, test_case);
     }
 
-    generate_test_file(test_cases);
+    generate_test_file_from_test_cases(test_cases);
 }
 
-#run generate_tests();
+#run generate_test_files();
