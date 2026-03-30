@@ -96,6 +96,13 @@ decode_leaf_case :: (value: JSON_Value, description_path: []string) -> Canonical
     reimplements, ok = object_get_string(value.object, "reimplements");
     if ok out.reimplements = reimplements;
 
+    scenario_values, has_scenarios := object_get_array(value.object, "scenarios");
+    if has_scenarios {
+        scenarios: [..] string;
+        for scenario: scenario_values  array_add(*scenarios, scenario.str);
+        out.scenarios = scenarios;
+    }
+
     return out, true;
 }
 
@@ -113,6 +120,12 @@ object_get_string :: (obj: *JSON_Object, key: string) -> string, bool {
     value, ok := object_get(obj, key);
     if !ok || value.type != .STRING return "", false;
     return value.str, true;
+}
+
+object_get_array :: (obj: *JSON_Object, key: string) -> []JSON_Value, bool {
+    value, ok := object_get(obj, key);
+    if !ok || value.type != .ARRAY return .[], false;
+    return value.array, true;
 }
 
 #import "Basic";
