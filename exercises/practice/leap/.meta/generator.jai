@@ -2,6 +2,7 @@
 #import "Hash_Table";
 #import "String";
 #import,file "../../../shared/generator/module.jai";
+#import,file "../../../shared/generator/json.jai";
 #import,file "../../../shared/generator/tests_file.jai";
 
 generate_test_files :: () {
@@ -10,10 +11,10 @@ generate_test_files :: () {
     test_cases: [..] TestCase;
     for canonical_case: canonical.cases {
         expected := canonical_case.expected.boolean;
-        year := json_get_number_property(canonical_case.input.object, "year");
+        year := json_get_number_property(canonical_case.input, "year");
 
         test_case := TestCase.{
-            name = replace(replace(replace(replace(replace(canonical_case.full_description, " ", "_"), "-", "_"), ".", "_"), ",", "_"), "__", "_"),
+            name = to_test_name(canonical_case.description_path),
             body = tprint("assert_equal(%, is_leap_year(%));", expected, year)
         };
         array_add(*test_cases, test_case);

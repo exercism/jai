@@ -3,6 +3,16 @@ TestCase :: struct {
     body: string;
 }
 
+to_test_name :: (description_path: []string) -> string {
+    test_name := join(.. description_path, separator = " > ");
+    test_name = replace(test_name, " ", "_");
+    test_name = replace(test_name, "-", "_");
+    test_name = replace(test_name, ".", "_");
+    test_name = replace(test_name, ",", "_");
+    test_name = replace(test_name, "__", "_");
+    return test_name;
+}
+
 build_test_file_contents :: (test_cases: [] TestCase) -> string {
     builder: String_Builder;
 

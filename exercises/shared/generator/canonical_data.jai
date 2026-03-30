@@ -1,8 +1,9 @@
 CanonicalCase :: struct {
     uuid: string;
     reimplements: string;
-    full_description: string;
+    description_path: []string;
     property: string;
+    scenarios: []string;
     input: *JSON_Value;
     expected: *JSON_Value;
 }
@@ -34,20 +35,22 @@ decode_canonical_data :: (root: JSON_Value) -> bool, CanonicalData {
     if cases_ptr == null || ((.*)cases_ptr).type != .ARRAY return false, out;
 
     for *case_val: ((.*)cases_ptr).array {
-        case_ok := decode_case_tree(case_val, "", *out.cases);
+        case_ok := decode_case_tree(case_val, .[], *out.cases);
         if !case_ok return false, .{};
     }
 
     return true, out;
 }
 
-decode_case_tree :: (value: JSON_Value, parent_path: string, out_cases: *[..] CanonicalCase) -> bool {
+decode_case_tree :: (value: JSON_Value, description_path: []string, out_cases: *[..] CanonicalCase) -> bool {
     if value.type != .OBJECT return false;
 
     description, has_description := object_get_string(value.object, "description");
     if !has_description return false;
 
-    current_path := path_join(parent_path, description);
+    current_path: [..]string;
+    array_copy(*current_path, description_path);
+    array_add(*current_path, description);
 
     child_cases, has_child_cases := object_get(value.object, "cases");
     if has_child_cases {
@@ -66,7 +69,7 @@ decode_case_tree :: (value: JSON_Value, parent_path: string, out_cases: *[..] Ca
     return true;
 }
 
-decode_leaf_case :: (value: JSON_Value, full_description: string) -> CanonicalCase, bool {
+decode_leaf_case :: (value: JSON_Value, description_path: []string) -> CanonicalCase, bool {
     out: CanonicalCase;
     ok: bool;
     if value.type != .OBJECT return out, false;
@@ -76,7 +79,7 @@ decode_leaf_case :: (value: JSON_Value, full_description: string) -> CanonicalCa
     if !ok return out, false;
     out.uuid = uuid;
 
-    out.full_description = full_description;
+    out.description_path = description_path;
 
     property: string;
     property, ok = object_get_string(value.object, "property");
@@ -94,11 +97,6 @@ decode_leaf_case :: (value: JSON_Value, full_description: string) -> CanonicalCa
     if ok out.reimplements = reimplements;
 
     return out, true;
-}
-
-path_join :: (parent: string, child: string) -> string {
-    if !parent.count return child;
-    return tprint("% > %", parent, child);
 }
 
 object_get :: (obj: *JSON_Object, key: string) -> JSON_Value, bool {
