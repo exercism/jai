@@ -203,42 +203,31 @@ parse_object :: (str: string) -> JSON_Object, string {
 }
 
 parse_string :: (str: string) -> string, string {
-    result: string;
-    remainder: string;
+    result: String_Builder;
+    init_string_builder(*result);
 
-    inside := advance(str);
-    needs_unescape := false;
+    remainder := advance(str);
 
-    while true {
-        if !inside.count return "", str;
-
-        if inside[0] == #char "\"" break;
-
-        if inside[0] == #char "\\" {
-            needs_unescape = true;
-            if inside.count < 2 return "", str;
-            advance(*inside);
+    while remainder[0] != #char "\"" {
+        if remainder[0] == #char "\\" {
+            remainder = advance(remainder);
+            if remainder[0] == {
+                case #char "r";  append(*result, #char "\r");
+                case #char "n";  append(*result, #char "\n");
+                case #char "t";  append(*result, #char "\t");
+                case #char "\\"; append(*result, #char "\\");
+                case #char "\""; append(*result, #char "\"");
+            }
+        } else {
+            append(*result, remainder[0]);
         }
 
-        if inside[0] < 0x20 return "", str;
-        advance(*inside);
+        remainder = advance(remainder);
     }
 
-    length := inside.data - str.data - 1;
-    result = slice(str, 1, length);
+    remainder = advance(remainder);
 
-    if needs_unescape {
-        out: string;
-        ok: bool;
-        out, ok = unescape(result);
-        if !ok return "", str;
-        result = out;
-    } else {
-        result = copy_string(result);
-    }
-
-    remainder = slice(str, length + 2, str.count - length - 2);
-    return result, remainder;
+    return builder_to_string(*result), remainder;
 }
 
 unescape :: (str: string) -> string, bool {
