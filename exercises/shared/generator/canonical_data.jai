@@ -13,96 +13,66 @@ CanonicalData :: struct {
     cases: [..] CanonicalCase;
 }
 
-decode_canonical_data_json :: (json: string) -> bool, CanonicalData {
-    result := parse_json(json);
+decode_canonical_data_json :: (json: string) -> CanonicalData {
+    root := parse_json(json);
 
-    decode_ok, canonical := decode_canonical_data(result);
-    return decode_ok, canonical;
-}
-
-// TODO: remove the error handling
-decode_canonical_data :: (root: JSON_Value) -> bool, CanonicalData {
-    if root.type != .OBJECT return false, .{};
+    assert(root.type == .OBJECT);
 
     out: CanonicalData;
 
-    exercise, ok := object_get_string(root.object, "exercise");
-    if !ok return false, out;
+    _, exercise := get_string_property(*root, "exercise");
     out.exercise = exercise;
 
-    cases_ptr, _ := object_get_array(root.object, "cases");
-    // if !ok return false, out;
+    _, cases := get_array_property(*root, "cases");
+    for cases  decode_case_tree(it, .[], *out.cases);
 
-    for *case_val: cases_ptr {
-        case_ok := decode_case_tree(case_val, .[], *out.cases);
-        if !case_ok return false, .{};
-    }
-
-    return true, out;
+    return out;
 }
 
-decode_case_tree :: (value: JSON_Value, description_path: []string, out_cases: *[..] CanonicalCase) -> bool {
-    if value.type != .OBJECT return false;
+decode_case_tree :: (value: JSON_Value, description_path: []string, out_cases: *[..] CanonicalCase) {
+    assert(value.type == .OBJECT);
 
-    description, has_description := object_get_string(value.object, "description");
-    if !has_description return false;
-
+    _, description := get_string_property(*value, "description");
     current_path: [..]string;
     array_copy(*current_path, description_path);
     array_add(*current_path, description);
 
-    child_cases, has_child_cases := object_get(value.object, "cases");
-    if has_child_cases {
-        if child_cases.type != .ARRAY return false;
+    has_cases, cases := get_array_property(*value, "cases");
+    if has_cases  for cases  decode_case_tree(it, current_path, out_cases);
 
-        for *child: child_cases.array {
-            ok := decode_case_tree(child, current_path, out_cases);
-            if !ok return false;
-        }
-        return true;
-    }
-
-    parsed_case, ok := decode_leaf_case(value, current_path);
-    if !ok return false;
-    array_add(out_cases, parsed_case);
-    return true;
+    canonical_case := decode_leaf_case(value, current_path);
+    array_add(out_cases, canonical_case);
 }
 
-decode_leaf_case :: (value: JSON_Value, description_path: []string) -> CanonicalCase, bool {
+decode_leaf_case :: (value: JSON_Value, description_path: []string) -> CanonicalCase {
+    assert(value.type == .OBJECT);
+
     out: CanonicalCase;
-    ok: bool;
-    if value.type != .OBJECT return out, false;
-
-    uuid: string;
-    uuid, ok = object_get_string(value.object, "uuid");
-    if !ok return out, false;
-    out.uuid = uuid;
-
     out.description_path = description_path;
 
-    property: string;
-    property, ok = object_get_string(value.object, "property");
-    if !ok return out, false;
+    _, uuid := get_string_property(*value, "uuid"); 
+    out.uuid = uuid;
+
+    _, property := get_string_property(*value, "property"); 
     out.property = property;
 
-    out.input = object_get_pointer(value.object, "input");
-    if out.input == null return out, false;
+    _, input := get_property_pointer(*value, "input");
+    out.input = input;
 
-    out.expected = object_get_pointer(value.object, "expected");
-    if out.expected == null return out, false;
+    _, expected := get_property_pointer(*value, "expected");
+    out.expected = expected;
 
-    reimplements: string;
-    reimplements, ok = object_get_string(value.object, "reimplements");
-    if ok out.reimplements = reimplements;
+    has_reimplements, reimplements := get_string_property(*value, "reimplements");
+    if has_reimplements  out.reimplements = reimplements;
 
-    scenario_values, has_scenarios := object_get_array(value.object, "scenarios");
+    has_scenarios, scenario_values := get_array_property(*value, "scenarios");
     if has_scenarios {
         scenarios: [..] string;
         for scenario: scenario_values  array_add(*scenarios, scenario.str);
         out.scenarios = scenarios;
     }
 
-    return out, true;
+    return out;
 }
 
 object_get :: (obj: *JSON_Object, key: string) -> JSON_Value, bool {

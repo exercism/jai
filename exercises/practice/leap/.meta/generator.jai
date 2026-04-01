@@ -5,6 +5,7 @@
 #import,file "../../../shared/generator/json.jai";
 #import,file "../../../shared/generator/tests_file.jai";
 
+// TODO: perhaps make this into a macro
 generate_test_files :: () {
 canonical_bob := download_canonical_data("matrix");
     canonical := download_canonical_data("leap");
