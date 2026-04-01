@@ -75,28 +75,6 @@ decode_leaf_case :: (value: JSON_Value, description_path: []string) -> Canonical
     return out;
 }
 
-object_get :: (obj: *JSON_Object, key: string) -> JSON_Value, bool {
-    ptr := table_find_pointer(obj, key);
-    if ptr == null return .{}, false;
-    return (.*)ptr, true;
-}
-
-object_get_pointer :: (obj: *JSON_Object, key: string) -> *JSON_Value {
-    return table_find_pointer(obj, key);
-}
-
-object_get_string :: (obj: *JSON_Object, key: string) -> string, bool {
-    value, ok := object_get(obj, key);
-    if !ok || value.type != .STRING return "", false;
-    return value.str, true;
-}
-
-object_get_array :: (obj: *JSON_Object, key: string) -> []JSON_Value, bool {
-    value, ok := object_get(obj, key);
-    if !ok || value.type != .ARRAY return .[], false;
-    return value.array, true;
-}
-
 #import "Basic";
 #import "Curl";
 #import "Hash_Table";
