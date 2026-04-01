@@ -18,8 +18,12 @@ to_test_name :: (description_path: []string) -> string {
 
     for description: description_path {
         for description {
-            if contains(ALLOWED_CHARACTERS, it)  append(*test_name, to_lower(it));
-            else if it == #char " "  append(*test_name, "_");
+            if contains(ALLOWED_CHARACTERS, it) {
+                append(*test_name, to_lower(it));
+            }
+            else if it == #char " " {
+                append(*test_name, "_");
+            }
         }
 
         if it_index > 0  append(*test_name, "_");
