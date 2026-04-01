@@ -51,8 +51,6 @@ generate_test_file_from_test_cases :: (test_cases: [] TestCase) {
     set_build_options_dc(.{do_output=false});
 }
 
-#import "Basic";
 #import "Compiler";
 #import "File";
-#import "Hash_Table";
 #import "String";

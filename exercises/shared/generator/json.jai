@@ -207,6 +207,4 @@ parse_string :: (str: string) -> string, string {
 }
 
 #import "Basic";
-#import "File";
 #import "Hash_Table";
-#import "String";

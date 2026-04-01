@@ -1,9 +1,5 @@
 #import "Basic";
-#import "Hash_Table";
-#import "String";
-#import,file "../../../shared/generator/module.jai";
-#import,file "../../../shared/generator/json.jai";
-#import,file "../../../shared/generator/tests_file.jai";
+#import,dir "../../../shared/generator";
 
 // TODO: perhaps make this into a macro
 generate_test_files :: () {
