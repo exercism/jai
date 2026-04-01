@@ -6,7 +6,9 @@
 #import,file "../../../shared/generator/tests_file.jai";
 
 generate_test_files :: () {
+canonical_bob := download_canonical_data("matrix");
     canonical := download_canonical_data("leap");
+    print("Canonical data for leap: %\n", canonical);
 
     test_cases: [..] TestCase;
     for canonical_case: canonical.cases {

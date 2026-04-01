@@ -115,51 +115,36 @@ parse_array :: (str: string) -> [] JSON_Value, string {
     result: [..] JSON_Value;
     remainder := trim_left(advance(str));
 
-    while remainder[0] != #char "]" {
+    while remainder {
         value: JSON_Value;
         value, remainder = parse_value(remainder);
         array_add(*result, value);
         
         remainder = trim_left(remainder);
-        if remainder[0] == #char "]"  break;
-
-        remainder = advance(remainder);
+        if remainder[0] == {
+            case #char "]";
+                remainder = advance(remainder);
+                break;
+            case #char ",";
+                remainder = advance(remainder);
+        }
     }
 
-    remainder = advance(remainder);
     return result, remainder;
 }
 
 parse_object :: (str: string) -> JSON_Object, string {
     result: JSON_Object;
-    remainder := trim_left(advance(str));
-
-    if remainder.count && remainder[0] == #char "}" {
-        remainder = advance(remainder);
-        return result, remainder;
-    }
-
     init(*result);
 
-    while true {
-        if !remainder.count || remainder[0] != #char "\"" return result, remainder;
+    remainder := trim_left(advance(str));
 
+    while remainder {
         key: string;
         key, remainder = parse_string(remainder);
 
-        existing := table_find_pointer(*result, key);
-        if existing {
-            free(key);
-            return result, remainder;
-        }
-
         remainder = trim_left(remainder);
-        if !remainder.count || remainder[0] != #char ":" {
-            free(key);
-            return result, remainder;
-        }
-
-        remainder = advance(remainder);
+        remainder = advance(remainder); // :
         remainder = trim_left(remainder);
 
         value: JSON_Value;
@@ -168,21 +153,16 @@ parse_object :: (str: string) -> JSON_Object, string {
         table_add(*result, key, value);
 
         remainder = trim_left(remainder);
-        if !remainder.count return result, remainder;
-
-        if remainder[0] == #char "," {
-            remainder = trim_left(advance(remainder));
-            if !remainder.count return result, remainder;
-            continue;
+        if remainder[0] == {
+            case #char "}";
+                remainder = trim_left(advance(remainder));
+                break;
+            case #char ",";
+                remainder = trim_left(advance(remainder));
         }
-
-        if remainder[0] == #char "}" {
-            remainder = advance(remainder);
-            return result, remainder;
-        }
-
-        return result, remainder;
     }
+
+    return result, remainder;
 }
 
 parse_string :: (str: string) -> string, string {
@@ -191,24 +171,27 @@ parse_string :: (str: string) -> string, string {
 
     remainder := advance(str);
 
-    while remainder[0] != #char "\"" {
-        if remainder[0] == #char "\\" {
-            remainder = advance(remainder);
-            if remainder[0] == {
-                case #char "r";  append(*result, #char "\r");
-                case #char "n";  append(*result, #char "\n");
-                case #char "t";  append(*result, #char "\t");
-                case #char "\\"; append(*result, #char "\\");
-                case #char "\""; append(*result, #char "\"");
-            }
-        } else {
-            append(*result, remainder[0]);
+    while remainder {
+        if remainder[0] == {
+            case #char "\"";
+                remainder = advance(remainder);
+                break;
+            case #char "\\";
+                remainder = advance(remainder);
+                if remainder[0] == {
+                    case #char "r";  append(*result, #char "\r");
+                    case #char "n";  append(*result, #char "\n");
+                    case #char "t";  append(*result, #char "\t");
+                    case #char "\\"; append(*result, #char "\\");
+                    case #char "\""; append(*result, #char "\"");
+                    case; assert(false, "Unsupported escape sequence: \\%", remainder[0]);
+                }
+                remainder = advance(remainder);            
+            case;
+                append(*result, remainder[0]);
+                remainder = advance(remainder);
         }
-
-        remainder = advance(remainder);
     }
-
-    remainder = advance(remainder);
 
     return builder_to_string(*result), remainder;
 }
