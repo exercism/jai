@@ -265,14 +265,6 @@ unescape :: (str: string) -> string, bool {
                 result[rc] = str[i];
                 rc += 1;
 
-            case #char "b";
-                result[rc] = 0x08;
-                rc += 1;
-
-            case #char "f";
-                result[rc] = 0x0c;
-                rc += 1;
-
             case #char "n";
                 result[rc] = #char "\n";
                 rc += 1;
