@@ -43,9 +43,9 @@ build_test_file_contents :: (tests: [] Test) -> string {
     return builder_to_string(*builder);
 }
 
-generate_test_file_from_test_cases :: (test_cases: [] Test) {
-    test_file_contents := build_test_file_contents(test_cases);
-    write_entire_file("../tests.jai", test_file_contents);
+write_test_file :: (test_cases: [] Test) {
+    contents := build_test_file_contents(test_cases);
+    write_entire_file("../tests.jai", contents);
 
     // Do no create an executable for this module, since it's meant to be at compile-time
     set_build_options_dc(.{do_output=false});

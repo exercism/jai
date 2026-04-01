@@ -19,7 +19,7 @@ canonical_bob := download_canonical_data("matrix");
         array_add(*test_cases, test_case);
     }
 
-    generate_test_file_from_test_cases(test_cases);
+    write_test_file(test_cases);
 }
 
 #run generate_test_files();
