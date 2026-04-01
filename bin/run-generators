@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Synopsis:
+# Run the generator for each exercise. This will regenerate the test suite
+# for each exercise based on the canonical data.
+
+# Example: run all exercise generators
+# bin/run-generators
+
+# Example: run single exercise generator
+# bin/run-generators two-fer
+
+set -eo pipefail
+
+exercise_slug="${1:-*}"
+shopt -s nullglob
+for exercise_dir in ./exercises/{concept,practice}/${exercise_slug}/; do
+    generator_file="${exercise_dir}/.meta/generator.jai"
+    if [[ -f "${generator_file}" ]]; then
+        slug=$(basename "${exercise_dir}")
+        echo "Running generator for ${slug} exercise..."
+        jai -quiet "${generator_file}"
+    fi
+done
