@@ -196,7 +196,7 @@ parse_string :: (str: string) -> string, string {
                     case #char "\""; append(*result, #char "\"");
                     case; assert(false, "Unsupported escape sequence: \\%", remainder[0]);
                 }
-                remainder = advance(remainder);            
+                remainder = advance(remainder);
             case;
                 append(*result, remainder[0]);
                 remainder = advance(remainder);

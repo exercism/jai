@@ -1,4 +1,4 @@
-TestCase :: struct {
+Test :: struct {
     name: string;
     body: string;
 }
@@ -13,21 +13,21 @@ to_test_name :: (description_path: []string) -> string {
     return test_name;
 }
 
-build_test_file_contents :: (test_cases: [] TestCase) -> string {
+build_test_file_contents :: (tests: [] Test) -> string {
     builder: String_Builder;
 
     append(*builder, "#run {\n");
-    for test_case: test_cases {
+    for tests {
         if it_index == 0 {
-            append(*builder, tprint("    %();\n", test_case.name));
+            append(*builder, tprint("    %();\n", it.name));
         } else {
-            append(*builder, tprint("    skip(%());\n", test_case.name));
+            append(*builder, tprint("    skip(%());\n", it.name));
         }
     }
     append(*builder, "}\n");
 
-    for test_case: test_cases {
-        append(*builder, tprint("\n% :: () {\n    %\n}\n", test_case.name, test_case.body));
+    for tests {
+        append(*builder, tprint("\n% :: () {\n    %\n}\n", it.name, it.body));
     }
 
     append(*builder, #string END
@@ -43,7 +43,7 @@ build_test_file_contents :: (test_cases: [] TestCase) -> string {
     return builder_to_string(*builder);
 }
 
-generate_test_file_from_test_cases :: (test_cases: [] TestCase) {
+generate_test_file_from_test_cases :: (test_cases: [] Test) {
     test_file_contents := build_test_file_contents(test_cases);
     write_entire_file("../tests.jai", test_file_contents);
 
