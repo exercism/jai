@@ -14,7 +14,8 @@ canonical_bob := download_canonical_data("matrix");
 
         test_case := Test.{
             name = to_test_name(canonical_case.description_path),
-            body = tprint("assert_equal(%, is_leap_year(%));", expected, year)
+            body = tprint("assert_equal(%, is_leap_year(%));", expected, year),
+            skip = it_index > 0
         };
         array_add(*test_cases, test_case);
     }

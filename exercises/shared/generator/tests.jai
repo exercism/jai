@@ -1,6 +1,7 @@
 Test :: struct {
     name: string;
     body: string;
+    skip: bool;
 }
 
 to_test_name :: (description_path: []string) -> string {
@@ -18,10 +19,10 @@ build_test_file_contents :: (tests: [] Test) -> string {
 
     append(*builder, "#run {\n");
     for tests {
-        if it_index == 0 {
-            append(*builder, tprint("    %();\n", it.name));
-        } else {
+        if it.skip {
             append(*builder, tprint("    skip(%());\n", it.name));
+        } else {
+            append(*builder, tprint("    %();\n", it.name));
         }
     }
     append(*builder, "}\n");
