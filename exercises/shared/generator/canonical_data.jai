@@ -14,8 +14,7 @@ CanonicalData :: struct {
 }
 
 decode_canonical_data_json :: (json: string) -> bool, CanonicalData {
-    parse_ok, result := json_parse_string(json);
-    if !parse_ok return false, .{};
+    result := parse_json(json);
 
     decode_ok, canonical := decode_canonical_data(result);
     return decode_ok, canonical;

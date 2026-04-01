@@ -22,221 +22,188 @@ JSON_Value :: struct {
 
 JSON_Object :: Table(string, JSON_Value);
 
-json_get_boolean_property :: (value: *JSON_Value, property: string) -> bool {
-    json_value := json_get_property(value, property);
+get_boolean_property :: (value: *JSON_Value, property: string) -> bool {
+    json_value := get_property(value, property);
     assert(json_value.type == .BOOLEAN);
     return json_value.boolean;
 }
 
-json_get_number_property :: (value: *JSON_Value, property: string) -> float64 {
-    json_value := json_get_property(value, property);
+get_number_property :: (value: *JSON_Value, property: string) -> float64 {
+    json_value := get_property(value, property);
     assert(json_value.type == .NUMBER);
     return json_value.number;
 }
 
-json_get_string_property :: (value: *JSON_Value, property: string) -> string {
-    json_value := json_get_property(value, property);
+get_string_property :: (value: *JSON_Value, property: string) -> string {
+    json_value := get_property(value, property);
     assert(json_value.type == .STRING);
     return json_value.str;
 }
 
-json_get_array_property :: (value: *JSON_Value, property: string) -> []JSON_Value {
-    json_value := json_get_property(value, property);
+get_array_property :: (value: *JSON_Value, property: string) -> []JSON_Value {
+    json_value := get_property(value, property);
     assert(json_value.type == .ARRAY);
     return json_value.array;
 }
 
-json_get_property :: (value: *JSON_Value, property: string) -> JSON_Value {
+get_property :: (value: *JSON_Value, property: string) -> JSON_Value {
     assert(value != null && value.type == .OBJECT);
     result, property := table_find(value.object, property);
     assert(result);
     return property;
 }
 
-json_parse_string :: (content: string) -> success: bool, JSON_Value {
-    if !content return false, .{};
-
-    value, remainder, ok := parse_value(content);
-    if !ok return false, value;
-
-    remainder = trim_left(remainder, WHITESPACE_CHARS);
-    if remainder.count {
-        log_error("Unexpected trailing characters: %", remainder);
-        return false, value;
-    }
-
-    return true, value;
+parse_json :: (content: string) -> JSON_Value {
+    value, _ := parse_value(content);
+    return value;
 }
 
-parse_value :: (to_parse: string) -> JSON_Value, string, bool {
+parse_value :: (to_parse: string) -> JSON_Value, string {
     result: JSON_Value;
-    ok: bool;
 
     remainder := trim_left(to_parse, WHITESPACE_CHARS);
-    if !remainder.count return result, remainder, false;
+    if !remainder.count return result, remainder;
 
     if remainder[0] == {
         case #char "n";
-            remainder, ok = expect_and_slice(remainder, "null");
-            if !ok return result, remainder, false;
+            remainder, _ = expect_and_slice(remainder, "null");
             result.type = .NULL;
-            return result, remainder, true;
+            return result, remainder;
 
         case #char "t";
-            remainder, ok = expect_and_slice(remainder, "true");
-            if !ok return result, remainder, false;
+            remainder, _ = expect_and_slice(remainder, "true");
             result.type = .BOOLEAN;
             result.boolean = true;
-            return result, remainder, true;
+            return result, remainder;
 
         case #char "f";
-            remainder, ok = expect_and_slice(remainder, "false");
-            if !ok return result, remainder, false;
+            remainder, _ = expect_and_slice(remainder, "false");
             result.type = .BOOLEAN;
             result.boolean = false;
-            return result, remainder, true;
+            return result, remainder;
 
         case #char "\"";
             str: string;
-            str, remainder, ok = parse_string(remainder);
-            if !ok return result, remainder, false;
+            str, remainder = parse_string(remainder);
             result.type = .STRING;
             result.str = str;
-            return result, remainder, true;
+            return result, remainder;
 
         case #char "[";
             arr: [] JSON_Value;
-            arr, remainder, ok = parse_array(remainder);
-            if !ok return result, remainder, false;
+            arr, remainder = parse_array(remainder);
             result.type = .ARRAY;
             result.array = arr;
-            return result, remainder, true;
+            return result, remainder;
 
         case #char "{";
             obj := cast(*JSON_Object) alloc(size_of(JSON_Object));
             memset(obj, 0, size_of(JSON_Object));
-            value_obj, remainder, ok := parse_object(remainder);
-            if !ok {
-                free(obj);
-                return result, remainder, false;
-            }
+            value_obj, remainder := parse_object(remainder);
             (.*)obj = value_obj;
             result.type = .OBJECT;
             result.object = obj;
-            return result, remainder, true;
+            return result, remainder;
 
         case;
             number, ok, rest := string_to_float64(remainder);
-            if !ok return result, remainder, false;
+            if !ok return result, remainder;
             result.type = .NUMBER;
             result.number = number;
-            return result, rest, true;
+            return result, rest;
     }
 }
 
-parse_array :: (str: string) -> [] JSON_Value, string, bool {
+parse_array :: (str: string) -> [] JSON_Value, string {
     result: [..] JSON_Value;
-    ok: bool;
-
-    if !str.count || str[0] != #char "[" return result, str, false;
 
     remainder := advance(str);
     remainder = trim_left(remainder, WHITESPACE_CHARS);
 
     if remainder.count && remainder[0] == #char "]" {
         remainder = advance(remainder);
-        return result, remainder, true;
+        return result, remainder;
     }
 
     while true {
         value: JSON_Value;
-        value, remainder, ok = parse_value(remainder);
-        if !ok return result, remainder, false;
+        value, remainder = parse_value(remainder);
 
         array_add(*result, value);
 
         remainder = trim_left(remainder, WHITESPACE_CHARS);
-        if !remainder.count return result, remainder, false;
+        if !remainder.count return result, remainder;
 
         if remainder[0] == #char "," {
             remainder = advance(remainder);
             remainder = trim_left(remainder, WHITESPACE_CHARS);
-            if !remainder.count return result, remainder, false;
+            if !remainder.count return result, remainder;
             continue;
         }
 
         if remainder[0] == #char "]" {
             remainder = advance(remainder);
-            return result, remainder, true;
+            return result, remainder;
         }
 
-        return result, remainder, false;
+        return result, remainder;
     }
 }
 
-parse_object :: (str: string) -> JSON_Object, string, bool {
+parse_object :: (str: string) -> JSON_Object, string {
     result: JSON_Object;
-    ok: bool;
-
-    if !str.count || str[0] != #char "{" return result, str, false;
-
     remainder := advance(str);
     remainder = trim_left(remainder, WHITESPACE_CHARS);
 
     if remainder.count && remainder[0] == #char "}" {
         remainder = advance(remainder);
-        return result, remainder, true;
+        return result, remainder;
     }
 
     init(*result, 32);
 
     while true {
-        if !remainder.count || remainder[0] != #char "\"" return result, remainder, false;
+        if !remainder.count || remainder[0] != #char "\"" return result, remainder;
 
         key: string;
-        key, remainder, ok = parse_string(remainder);
-        if !ok return result, remainder, false;
+        key, remainder = parse_string(remainder);
 
         existing := table_find_pointer(*result, key);
         if existing {
             free(key);
-            return result, remainder, false;
+            return result, remainder;
         }
 
         remainder = trim_left(remainder, WHITESPACE_CHARS);
         if !remainder.count || remainder[0] != #char ":" {
             free(key);
-            return result, remainder, false;
+            return result, remainder;
         }
 
         remainder = advance(remainder);
         remainder = trim_left(remainder, WHITESPACE_CHARS);
 
         value: JSON_Value;
-        value, remainder, ok = parse_value(remainder);
-        if !ok {
-            free(key);
-            return result, remainder, false;
-        }
+        value, remainder = parse_value(remainder);
 
         table_add(*result, key, value);
 
         remainder = trim_left(remainder, WHITESPACE_CHARS);
-        if !remainder.count return result, remainder, false;
+        if !remainder.count return result, remainder;
 
         if remainder[0] == #char "," {
             remainder = advance(remainder);
             remainder = trim_left(remainder, WHITESPACE_CHARS);
-            if !remainder.count return result, remainder, false;
+            if !remainder.count return result, remainder;
             continue;
         }
 
         if remainder[0] == #char "}" {
             remainder = advance(remainder);
-            return result, remainder, true;
+            return result, remainder;
         }
 
-        return result, remainder, false;
+        return result, remainder;
     }
 }
 
@@ -249,26 +216,25 @@ expect_and_slice :: (str: string, expected: string) -> string, bool {
     return remainder, true;
 }
 
-parse_string :: (str: string) -> string, string, bool {
+parse_string :: (str: string) -> string, string {
     result: string;
     remainder: string;
-    if !str.count || str[0] != #char "\"" return "", str, false;
 
     inside := advance(str);
     needs_unescape := false;
 
     while true {
-        if !inside.count return "", str, false;
+        if !inside.count return "", str;
 
         if inside[0] == #char "\"" break;
 
         if inside[0] == #char "\\" {
             needs_unescape = true;
-            if inside.count < 2 return "", str, false;
+            if inside.count < 2 return "", str;
             advance(*inside);
         }
 
-        if inside[0] < 0x20 return "", str, false;
+        if inside[0] < 0x20 return "", str;
         advance(*inside);
     }
 
@@ -279,14 +245,14 @@ parse_string :: (str: string) -> string, string, bool {
         out: string;
         ok: bool;
         out, ok = unescape(result);
-        if !ok return "", str, false;
+        if !ok return "", str;
         result = out;
     } else {
         result = copy_string(result);
     }
 
     remainder = slice(str, length + 2, str.count - length - 2);
-    return result, remainder, true;
+    return result, remainder;
 }
 
 unescape :: (str: string) -> string, bool {

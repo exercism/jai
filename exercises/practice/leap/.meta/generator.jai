@@ -11,7 +11,7 @@ generate_test_files :: () {
     test_cases: [..] TestCase;
     for canonical_case: canonical.cases {
         expected := canonical_case.expected.boolean;
-        year := json_get_number_property(canonical_case.input, "year");
+        year := get_number_property(canonical_case.input, "year");
 
         test_case := TestCase.{
             name = to_test_name(canonical_case.description_path),
