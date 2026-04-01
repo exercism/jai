@@ -31,8 +31,8 @@ decode_canonical_data :: (root: JSON_Value) -> bool, CanonicalData {
     if !ok return false, out;
     out.exercise = exercise;
 
-    cases_ptr, ok := object_get_array(root.object, "cases");
-    if !ok return false, out;
+    cases_ptr, _ := object_get_array(root.object, "cases");
+    // if !ok return false, out;
 
     for *case_val: cases_ptr {
         case_ok := decode_case_tree(case_val, .[], *out.cases);
