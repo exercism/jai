@@ -28,28 +28,24 @@ JSON_Object :: Table(string, JSON_Value);
 get_boolean_property :: (value: *JSON_Value, property: string) -> bool, bool {
     ok, json_value := get_property(value, property);
     if !ok return false, false;
-    assert(json_value.type == .BOOLEAN);
     return true, json_value.boolean;
 }
 
 get_number_property :: (value: *JSON_Value, property: string) -> bool, float64 {
     ok, json_value := get_property(value, property);
     if !ok return false, 0.0;
-    assert(json_value.type == .NUMBER);
     return true, json_value.number;
 }
 
 get_string_property :: (value: *JSON_Value, property: string) -> bool, string {
     ok, json_value := get_property(value, property);
     if !ok return false, "";
-    assert(json_value.type == .STRING);
     return true, json_value.str;
 }
 
 get_array_property :: (value: *JSON_Value, property: string) -> bool, []JSON_Value {
     ok, json_value := get_property(value, property);
     if !ok return false, .[];
-    assert(json_value.type == .ARRAY);
     return true, json_value.array;
 }
 

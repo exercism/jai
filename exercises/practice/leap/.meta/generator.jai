@@ -1,6 +1,6 @@
 to_test_case :: (canonical_case: CanonicalCase) -> Test {
     expected := canonical_case.expected.boolean;
-    year := get_number_property(canonical_case.input, "year");
+    _, year := get_number_property(canonical_case.input, "year");
 
     return Test.{
         name = to_test_name(canonical_case.description_path),
