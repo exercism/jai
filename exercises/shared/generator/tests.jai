@@ -17,38 +17,44 @@ to_test_name :: (description_path: []string) -> string {
 build_test_file_contents :: (tests: [] Test) -> string {
     builder: String_Builder;
 
-    append(*builder, "#run {\n");
+    print_to_builder(*builder, "#run {\n");
     for tests {
         if it.skip {
-            append(*builder, tprint("    skip(%());\n", it.name));
+            print_to_builder(*builder, "    skip(%());\n", it.name);
         } else {
-            append(*builder, tprint("    %();\n", it.name));
+            print_to_builder(*builder, "    %();\n", it.name);
         }
     }
-    append(*builder, "}\n");
+    print_to_builder(*builder, "}\n");
 
     for tests {
-        append(*builder, tprint("\n% :: () {\n    %\n}\n", it.name, it.body));
+        print_to_builder(*builder, "\n% :: () {\n    %\n}\n", it.name, it.body);
     }
 
-    append(*builder, #string END
-
-#run {
-    finished_running_tests();
-}
-
-#load "solution.jai";
-#load "extest.jai";
-    END);
+    print_to_builder(*builder, "\n");
+    print_to_builder(*builder, "#run {\n");
+    print_to_builder(*builder, "    finished_running_tests();\n");
+    print_to_builder(*builder, "}\n");
+    print_to_builder(*builder, "\n");
+    print_to_builder(*builder, "#load \"solution.jai\";\n");
+    print_to_builder(*builder, "#load \"extest.jai\";\n");
 
     return builder_to_string(*builder);
 }
 
-write_test_file :: (test_cases: [] Test) {
+write_test_file :: (exercise: string, to_test_case: (canonical_case: CanonicalCase) -> Test) {
+    canonical := download_canonical_data(exercise);
+
+    test_cases: [..] Test;
+    for canonical_case: canonical.cases {
+        test_case := to_test_case(canonical_case);
+        array_add(*test_cases, test_case);
+    }
+
     contents := build_test_file_contents(test_cases);
     write_entire_file("../tests.jai", contents);
 
-    // Do no create an executable for this module, since it's meant to be at compile-time
+    // Don't create an executable as the generator can run at compile-time
     set_build_options_dc(.{do_output=false});
 }
 

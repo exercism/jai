@@ -2,6 +2,7 @@
 // The problem-specifications repo is cloned (and updated) in a local directory.
 
 CanonicalCase :: struct {
+    index: int;
     uuid: string;
     reimplements: string;
     description_path: []string;
@@ -65,6 +66,7 @@ add_test_cases :: (value: JSON_Value, description_path: []string, out_cases: *[.
     if has_cases  for cases  add_test_cases(it, current_path, out_cases);
 
     canonical_case := parse_test_case(value, current_path);
+    canonical_case.index = out_cases.count;
     array_add(out_cases, canonical_case);
 }
 
