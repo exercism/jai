@@ -66,20 +66,21 @@ parse_json :: (content: string) -> JSON_Value {
 parse_value :: (content: string) -> JSON_Value, string {
     result: JSON_Value;
     remainder := trim_left(content, WHITESPACE_CHARS);
+    assert(remainder.count > 0);
 
     if remainder[0] == {
-        case #char "n";
+        case #char "n"; // null
             rest := advance(remainder, 4);
             result.type = .NULL;
             return result, rest;
 
-        case #char "t";
+        case #char "t"; // true
             rest := advance(remainder, 4);
             result.type = .BOOLEAN;
             result.boolean = true;
             return result, rest;
 
-        case #char "f";
+        case #char "f"; // false
             rest := advance(remainder, 5);
             result.type = .BOOLEAN;
             result.boolean = false;
@@ -100,11 +101,11 @@ parse_value :: (content: string) -> JSON_Value, string {
         case #char "{";
             obj := cast(*JSON_Object) alloc(size_of(JSON_Object));
             memset(obj, 0, size_of(JSON_Object));
-            value_obj, remainder := parse_object(remainder);
+            value_obj, rest := parse_object(remainder);
             (.*)obj = value_obj;
             result.type = .OBJECT;
             result.object = obj;
-            return result, remainder;
+            return result, rest;
 
         case;
             number, _, rest := string_to_float64(remainder);
