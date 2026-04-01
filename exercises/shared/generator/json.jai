@@ -3,8 +3,6 @@
 // As canonical data JSON files are guaranteed to be well-formed, the parser is not a fully compliant
 // JSON parser and therefore does not handle all edge cases or provide detailed error messages.
 
-WHITESPACE_CHARS :: " \t\n\r";
-
 JSON_Type :: enum u8 {
     NULL    :: 0;
     BOOLEAN :: 1;
@@ -65,7 +63,7 @@ parse_json :: (content: string) -> JSON_Value {
 
 parse_value :: (content: string) -> JSON_Value, string {
     result: JSON_Value;
-    remainder := trim_left(content, WHITESPACE_CHARS);
+    remainder := trim_left(content);
     assert(remainder.count > 0);
 
     if remainder[0] == {
@@ -99,12 +97,10 @@ parse_value :: (content: string) -> JSON_Value, string {
             return result, rest;
 
         case #char "{";
-            obj := cast(*JSON_Object) alloc(size_of(JSON_Object));
-            memset(obj, 0, size_of(JSON_Object));
-            value_obj, rest := parse_object(remainder);
-            (.*)obj = value_obj;
+            object, rest := parse_object(remainder);
             result.type = .OBJECT;
-            result.object = obj;
+            result.object = cast(*JSON_Object) alloc(size_of(JSON_Object));
+            (.*)result.object = object;
             return result, rest;
 
         case;
@@ -119,7 +115,7 @@ parse_array :: (str: string) -> [] JSON_Value, string {
     result: [..] JSON_Value;
 
     remainder := advance(str);
-    remainder = trim_left(remainder, WHITESPACE_CHARS);
+    remainder = trim_left(remainder);
 
     if remainder.count && remainder[0] == #char "]" {
         remainder = advance(remainder);
@@ -132,12 +128,12 @@ parse_array :: (str: string) -> [] JSON_Value, string {
 
         array_add(*result, value);
 
-        remainder = trim_left(remainder, WHITESPACE_CHARS);
+        remainder = trim_left(remainder);
         if !remainder.count return result, remainder;
 
         if remainder[0] == #char "," {
             remainder = advance(remainder);
-            remainder = trim_left(remainder, WHITESPACE_CHARS);
+            remainder = trim_left(remainder);
             if !remainder.count return result, remainder;
             continue;
         }
@@ -154,7 +150,7 @@ parse_array :: (str: string) -> [] JSON_Value, string {
 parse_object :: (str: string) -> JSON_Object, string {
     result: JSON_Object;
     remainder := advance(str);
-    remainder = trim_left(remainder, WHITESPACE_CHARS);
+    remainder = trim_left(remainder);
 
     if remainder.count && remainder[0] == #char "}" {
         remainder = advance(remainder);
@@ -175,26 +171,26 @@ parse_object :: (str: string) -> JSON_Object, string {
             return result, remainder;
         }
 
-        remainder = trim_left(remainder, WHITESPACE_CHARS);
+        remainder = trim_left(remainder);
         if !remainder.count || remainder[0] != #char ":" {
             free(key);
             return result, remainder;
         }
 
         remainder = advance(remainder);
-        remainder = trim_left(remainder, WHITESPACE_CHARS);
+        remainder = trim_left(remainder);
 
         value: JSON_Value;
         value, remainder = parse_value(remainder);
 
         table_add(*result, key, value);
 
-        remainder = trim_left(remainder, WHITESPACE_CHARS);
+        remainder = trim_left(remainder);
         if !remainder.count return result, remainder;
 
         if remainder[0] == #char "," {
             remainder = advance(remainder);
-            remainder = trim_left(remainder, WHITESPACE_CHARS);
+            remainder = trim_left(remainder);
             if !remainder.count return result, remainder;
             continue;
         }
