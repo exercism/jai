@@ -10,6 +10,7 @@ Test :: struct {
     skip: bool;
 }
 
+// TODO: make this more robust (e.g. by converting numbers to words
 to_test_name :: (description_path: []string) -> string {
     ALLOWED_CHARACTERS := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
