@@ -213,51 +213,6 @@ parse_string :: (str: string) -> string, string {
     return builder_to_string(*result), remainder;
 }
 
-unescape :: (str: string) -> string, bool {
-    result: string;
-    result = alloc_string(str.count);
-    rc := 0;
-
-    for i: 0..str.count - 1 {
-        if str[i] != #char "\\" {
-            if str[i] < 0x20 return "", false;
-
-            result[rc] = str[i];
-            rc += 1;
-            continue;
-        }
-
-        if i == str.count - 1 return "", false;
-        i += 1;
-
-        if str[i] == {
-            case #char "\""; #through;
-            case #char "/"; #through;
-            case #char "\\";
-                result[rc] = str[i];
-                rc += 1;
-
-            case #char "n";
-                result[rc] = #char "\n";
-                rc += 1;
-
-            case #char "r";
-                result[rc] = #char "\r";
-                rc += 1;
-
-            case #char "t";
-                result[rc] = #char "\t";
-                rc += 1;
-
-            case;
-                return "", false;
-        }
-    }
-
-    result.count = rc;
-    return result, true;
-}
-
 #import "Basic";
 #import "File";
 #import "Hash_Table";
