@@ -113,38 +113,21 @@ parse_value :: (content: string) -> JSON_Value, string {
 
 parse_array :: (str: string) -> [] JSON_Value, string {
     result: [..] JSON_Value;
+    remainder := trim_left(advance(str));
 
-    remainder := advance(str);
-    remainder = trim_left(remainder);
-
-    if remainder.count && remainder[0] == #char "]" {
-        remainder = advance(remainder);
-        return result, remainder;
-    }
-
-    while true {
+    while remainder[0] != #char "]" {
         value: JSON_Value;
         value, remainder = parse_value(remainder);
-
         array_add(*result, value);
-
+        
         remainder = trim_left(remainder);
-        if !remainder.count return result, remainder;
+        if remainder[0] == #char "]"  break;
 
-        if remainder[0] == #char "," {
-            remainder = advance(remainder);
-            remainder = trim_left(remainder);
-            if !remainder.count return result, remainder;
-            continue;
-        }
-
-        if remainder[0] == #char "]" {
-            remainder = advance(remainder);
-            return result, remainder;
-        }
-
-        return result, remainder;
+        remainder = advance(remainder);
     }
+
+    remainder = advance(remainder);
+    return result, remainder;
 }
 
 parse_object :: (str: string) -> JSON_Object, string {
