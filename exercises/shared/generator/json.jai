@@ -63,43 +63,39 @@ parse_json :: (content: string) -> JSON_Value {
     return value;
 }
 
-parse_value :: (to_parse: string) -> JSON_Value, string {
+parse_value :: (content: string) -> JSON_Value, string {
     result: JSON_Value;
-
-    remainder := trim_left(to_parse, WHITESPACE_CHARS);
-    if !remainder.count return result, remainder;
+    remainder := trim_left(content, WHITESPACE_CHARS);
 
     if remainder[0] == {
         case #char "n";
-            remainder, _ = expect_and_slice(remainder, "null");
+            rest := advance(remainder, 4);
             result.type = .NULL;
-            return result, remainder;
+            return result, rest;
 
         case #char "t";
-            remainder, _ = expect_and_slice(remainder, "true");
+            rest := advance(remainder, 4);
             result.type = .BOOLEAN;
             result.boolean = true;
-            return result, remainder;
+            return result, rest;
 
         case #char "f";
-            remainder, _ = expect_and_slice(remainder, "false");
+            rest := advance(remainder, 5);
             result.type = .BOOLEAN;
             result.boolean = false;
-            return result, remainder;
+            return result, rest;
 
         case #char "\"";
-            str: string;
-            str, remainder = parse_string(remainder);
+            str, rest := parse_string(remainder);
             result.type = .STRING;
             result.str = str;
-            return result, remainder;
+            return result, rest;
 
         case #char "[";
-            arr: [] JSON_Value;
-            arr, remainder = parse_array(remainder);
+            array, rest := parse_array(remainder);
             result.type = .ARRAY;
-            result.array = arr;
-            return result, remainder;
+            result.array = array;
+            return result, rest;
 
         case #char "{";
             obj := cast(*JSON_Object) alloc(size_of(JSON_Object));
@@ -111,8 +107,7 @@ parse_value :: (to_parse: string) -> JSON_Value, string {
             return result, remainder;
 
         case;
-            number, ok, rest := string_to_float64(remainder);
-            if !ok return result, remainder;
+            number, _, rest := string_to_float64(remainder);
             result.type = .NUMBER;
             result.number = number;
             return result, rest;
@@ -210,15 +205,6 @@ parse_object :: (str: string) -> JSON_Object, string {
 
         return result, remainder;
     }
-}
-
-expect_and_slice :: (str: string, expected: string) -> string, bool {
-    if str.count < expected.count || !equal(slice(str, 0, expected.count), expected) {
-        return str, false;
-    }
-
-    remainder := advance(str, expected.count);
-    return remainder, true;
 }
 
 parse_string :: (str: string) -> string, string {
