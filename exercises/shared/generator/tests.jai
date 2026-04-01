@@ -11,13 +11,21 @@ Test :: struct {
 }
 
 to_test_name :: (description_path: []string) -> string {
-    test_name := join(.. description_path, separator = " > ");
-    test_name = replace(test_name, " ", "_");
-    test_name = replace(test_name, "-", "_");
-    test_name = replace(test_name, ".", "_");
-    test_name = replace(test_name, ",", "_");
-    test_name = replace(test_name, "__", "_");
-    return test_name;
+    ALLOWED_CHARACTERS := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    test_name: String_Builder;
+    init_string_builder(*test_name);
+
+    for description: description_path {
+        for description {
+            if contains(ALLOWED_CHARACTERS, it)  append(*test_name, to_lower(it));
+            else if it == #char " "  append(*test_name, "_");
+        }
+
+        if it_index > 0  append(*test_name, "_");
+    }
+
+   return builder_to_string(*test_name);
 }
 
 build_test_file_contents :: (tests: [] Test) -> string {

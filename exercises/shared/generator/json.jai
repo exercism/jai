@@ -146,6 +146,12 @@ parse_object :: (str: string) -> JSON_Object, string {
     remainder := trim_left(advance(str));
 
     while remainder {
+        remainder = trim_left(remainder);
+        if remainder[0] == #char "}" {
+            remainder = advance(remainder);
+            break;
+        }
+
         key: string;
         key, remainder = parse_string(remainder);
 
