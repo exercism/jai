@@ -15,7 +15,6 @@ CanonicalData :: struct {
 
 decode_canonical_data_json :: (json: string) -> CanonicalData {
     root := parse_json(json);
-
     assert(root.type == .OBJECT);
 
     out: CanonicalData;
@@ -24,12 +23,12 @@ decode_canonical_data_json :: (json: string) -> CanonicalData {
     out.exercise = exercise;
 
     _, cases := get_array_property(*root, "cases");
-    for cases  decode_case_tree(it, .[], *out.cases);
+    for cases  add_test_cases(it, .[], *out.cases);
 
     return out;
 }
 
-decode_case_tree :: (value: JSON_Value, description_path: []string, out_cases: *[..] CanonicalCase) {
+add_test_cases :: (value: JSON_Value, description_path: []string, out_cases: *[..] CanonicalCase) {
     assert(value.type == .OBJECT);
 
     _, description := get_string_property(*value, "description");
@@ -38,13 +37,13 @@ decode_case_tree :: (value: JSON_Value, description_path: []string, out_cases: *
     array_add(*current_path, description);
 
     has_cases, cases := get_array_property(*value, "cases");
-    if has_cases  for cases  decode_case_tree(it, current_path, out_cases);
+    if has_cases  for cases  add_test_cases(it, current_path, out_cases);
 
-    canonical_case := decode_leaf_case(value, current_path);
+    canonical_case := parse_test_case(value, current_path);
     array_add(out_cases, canonical_case);
 }
 
-decode_leaf_case :: (value: JSON_Value, description_path: []string) -> CanonicalCase {
+parse_test_case :: (value: JSON_Value, description_path: []string) -> CanonicalCase {
     assert(value.type == .OBJECT);
 
     out: CanonicalCase;
@@ -76,6 +75,4 @@ decode_leaf_case :: (value: JSON_Value, description_path: []string) -> Canonical
 }
 
 #import "Basic";
-#import "Curl";
-#import "Hash_Table";
 #import,file "json.jai";
