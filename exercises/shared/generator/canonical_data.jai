@@ -24,9 +24,9 @@ PROBLEM_SPECIFICATIONS_REPO_DIRECTORY :: #run () -> string {
 
 fetch_problem_specifications_repo :: () {
     if file_exists(PROBLEM_SPECIFICATIONS_REPO_DIRECTORY) {
-        run_command("git", "pull", working_directory = PROBLEM_SPECIFICATIONS_REPO_DIRECTORY);
+        run_command("git", "pull", "--quiet", working_directory = PROBLEM_SPECIFICATIONS_REPO_DIRECTORY);
     } else {
-        run_command("git", "clone", "https://github.com/exercism/problem-specifications.git", working_directory = PROBLEM_SPECIFICATIONS_REPO_DIRECTORY);
+        run_command("git", "clone", "--quiet", "https://github.com/exercism/problem-specifications.git", working_directory = PROBLEM_SPECIFICATIONS_REPO_DIRECTORY);
     }
 }
 
