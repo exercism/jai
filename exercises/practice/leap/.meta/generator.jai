@@ -9,7 +9,7 @@ to_test_case :: (canonical_case: CanonicalCase) -> Test {
     };
 }
 
-#run write_test_file("leap", to_test_case);
+#run run_generator("leap", to_test_case);
 
 #import "Basic";
 #import,dir "../../../shared/generator";

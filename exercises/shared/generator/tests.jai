@@ -1,3 +1,9 @@
+// This module can generate test files. It does that by:
+// 1. Downloading the canonical data for an exercise from the problem-specifications repo.
+// 2. Calling a provided function to convert canonical cases into Jai test cases.
+// 3. Building the test file contents
+// 4. Writing the test file contents to the test file.
+
 Test :: struct {
     name: string;
     body: string;
@@ -42,7 +48,7 @@ build_test_file_contents :: (tests: [] Test) -> string {
     return builder_to_string(*builder);
 }
 
-write_test_file :: (exercise: string, to_test_case: (canonical_case: CanonicalCase) -> Test) {
+run_generator :: (exercise: string, to_test_case: (canonical_case: CanonicalCase) -> Test) {
     canonical := download_canonical_data(exercise);
 
     test_cases: [..] Test;
