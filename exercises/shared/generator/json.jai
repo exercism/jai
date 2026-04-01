@@ -1,3 +1,8 @@
+// This file contains a basic JSON parser and data structure for representing JSON values. 
+// It is used by the canonical data generator to parse the JSON files containing the test cases.
+// As canonical data JSON files are guaranteed to be well-formed, the parser is not a fully compliant
+// JSON parser and therefore does not handle all edge cases or provide detailed error messages.
+
 WHITESPACE_CHARS :: " \t\n\r";
 
 JSON_Type :: enum u8 {
