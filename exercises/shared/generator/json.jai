@@ -139,7 +139,7 @@ parse_object :: (str: string) -> JSON_Object, string {
         return result, remainder;
     }
 
-    init(*result, 32);
+    init(*result);
 
     while true {
         if !remainder.count || remainder[0] != #char "\"" return result, remainder;
