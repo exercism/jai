@@ -149,8 +149,7 @@ parse_array :: (str: string) -> [] JSON_Value, string {
 
 parse_object :: (str: string) -> JSON_Object, string {
     result: JSON_Object;
-    remainder := advance(str);
-    remainder = trim_left(remainder);
+    remainder := trim_left(advance(str));
 
     if remainder.count && remainder[0] == #char "}" {
         remainder = advance(remainder);
@@ -189,8 +188,7 @@ parse_object :: (str: string) -> JSON_Object, string {
         if !remainder.count return result, remainder;
 
         if remainder[0] == #char "," {
-            remainder = advance(remainder);
-            remainder = trim_left(remainder);
+            remainder = trim_left(advance(remainder));
             if !remainder.count return result, remainder;
             continue;
         }
@@ -287,16 +285,6 @@ unescape :: (str: string) -> string, bool {
                 result[rc] = #char "\t";
                 rc += 1;
 
-            case #char "u";
-                if i + 4 >= str.count return "", false;
-
-                codepoint, ok := parse_unicode(slice(str, i + 1, 4));
-                if !ok return "", false;
-
-                utf8_len := encode_utf8(codepoint, *(result.data[rc]));
-                rc += utf8_len;
-                i += 4;
-
             case;
                 return "", false;
         }
@@ -304,28 +292,6 @@ unescape :: (str: string) -> string, bool {
 
     result.count = rc;
     return result, true;
-}
-
-parse_unicode :: (str: string) -> u16, bool {
-    val, ok, remainder := string_to_int(str, base = 16);
-    if !ok || val > 0xFFFF || remainder.count return 0, false;
-    return xx val, true;
-}
-
-encode_utf8 :: (val: u16, result: *u8) -> len: u8 {
-    if val & 0xF800 {
-        result[0] = xx (0xE0 | ((val & 0xF000) >> 12));
-        result[1] = xx (0x80 | ((val & 0x0FC0) >> 6));
-        result[2] = xx (0x80 | (val & 0x003F));
-        return 3;
-    } else if val & 0x0F80 {
-        result[0] = xx (0xC0 | ((val & 0x0FC0) >> 6));
-        result[1] = xx (0x80 | (val & 0x003F));
-        return 2;
-    } else {
-        result[0] = xx (val & 0x7F);
-        return 1;
-    }
 }
 
 #import "Basic";
