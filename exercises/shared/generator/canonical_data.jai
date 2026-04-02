@@ -48,6 +48,8 @@ parse_canonical_data :: (json: string) -> CanonicalData {
     _, exercise := get_string_property(*root, "exercise");
     out.exercise = exercise;
 
+    // TODO: exclude reimplemented exercises
+    // TODO: check in tests.toml if the test case is excluded
     _, cases := get_array_property(*root, "cases");
     for cases  add_test_cases(it, .[], *out.cases);
 

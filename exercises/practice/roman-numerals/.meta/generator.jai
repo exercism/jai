@@ -1,3 +1,4 @@
+// TODO: PoC to see if templating system makes things more readably
 to_test_case :: (canonical_case: CanonicalCase) -> Test {
     expected := canonical_case.expected.boolean;
     _, number := get_number_property(canonical_case.input, "number");
