@@ -10,27 +10,25 @@ Test :: struct {
     skip: bool;
 }
 
-// TODO: make this more robust (e.g. by converting numbers to words
 to_test_name :: (description_path: []string) -> string {
-    ALLOWED_CHARACTERS := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-    test_name: String_Builder;
-    init_string_builder(*test_name);
+    builder: String_Builder;
+    init_string_builder(*builder);
 
     for description: description_path {
+        to_lower_in_place(description);
+
         for description {
-            if contains(ALLOWED_CHARACTERS, it) {
-                append(*test_name, to_lower(it));
-            }
-            else if it == #char " " {
-                append(*test_name, "_");
+            if it >= #char "a" && it <= #char "z" || it >= #char "0" && it <= #char "9" {
+                append(*builder, it);
+            } else if it == #char " " {
+                append(*builder, "_");
             }
         }
 
-        if it_index > 0  append(*test_name, "_");
+        if it_index > 0  append(*builder, "_");
     }
 
-   return builder_to_string(*test_name);
+   return builder_to_string(*builder);
 }
 
 build_test_file_contents :: (tests: [] Test) -> string {
