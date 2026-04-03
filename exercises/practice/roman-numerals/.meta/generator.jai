@@ -1,0 +1,15 @@
+to_test_case :: (canonical_case: CanonicalCase) -> Test {
+    expected := canonical_case.expected.str;
+    _, number := get_number_property(canonical_case.input, "number");
+
+    return Test.{
+        name = tprint("number_%", to_test_name(canonical_case.description_path)),
+        body = tprint("assert_equal(%, to_roman(%));", render_string(expected), number),
+        skip = canonical_case.index > 0
+    };
+}
+
+#run run_generator("roman-numerals", to_test_case);
+
+#import "Basic";
+#import,dir "../../../shared/generator";

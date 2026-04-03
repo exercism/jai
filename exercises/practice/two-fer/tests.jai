@@ -1,14 +1,14 @@
 #run {
     no_name_given();
-    skip(test_a_name_given());
+    skip(a_name_given());
     skip(another_name_given());
 }
 
 no_name_given :: () {
-    assert_equal("One for you, one for me.", two_fer());
+    assert_equal("One for you, one for me.", two_fer(""));
 }
 
-test_a_name_given :: () {
+a_name_given :: () {
     assert_equal("One for Alice, one for me.", two_fer("Alice"));
 }
 

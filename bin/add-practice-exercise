@@ -70,10 +70,22 @@ fi
 exercise_dir="exercises/practice/${slug}"
 files=$(jq -r --arg dir "${exercise_dir}" '.files | to_entries | map({key: .key, value: (.value | map("'"'"'" + $dir + "/" + . + "'"'"'") | join(" and "))}) | from_entries' "${exercise_dir}/.meta/config.json")
 
+generator_file="${exercise_dir}/.meta/generator.jai"
+cat << END_GENERATOR > "${generator_file}"
+to_test_case :: (canonical_case: CanonicalCase) -> Test {
+    // TODO: convert the canonical case into a Jai test case.
+}
+
+#run run_generator("${slug}", to_test_case);
+
+#import "Basic";
+#import,dir "../../../shared/generator";
+END_GENERATOR
+
 cat << NEXT_STEPS
 
 Your next steps are:
-- Create the test suite in $(jq -r '.test' <<< "${files}")
+- Create the test suite in $(jq -r '.test' <<< "${files}") via the generator file in "${generator_file}".
   - The tests should be based on the canonical data at 'https://github.com/exercism/problem-specifications/blob/main/exercises/${slug}/canonical-data.json'
   - Any test cases you don't implement, mark them in 'exercises/practice/${slug}/.meta/tests.toml' with "include = false"
 - Create the example solution in $(jq -r '.example' <<< "${files}")

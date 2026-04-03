@@ -1,4 +1,8 @@
 #run {
+    say_hi();
+}
+
+say_hi :: () {
     assert_equal("Hello, World!", hello());
 }
 
