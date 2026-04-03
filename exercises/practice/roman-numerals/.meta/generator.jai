@@ -1,11 +1,10 @@
-// TODO: PoC to see if templating system makes things more readably
 to_test_case :: (canonical_case: CanonicalCase) -> Test {
-    expected := canonical_case.expected.boolean;
+    expected := canonical_case.expected.str;
     _, number := get_number_property(canonical_case.input, "number");
 
     return Test.{
         name = tprint("number_%", to_test_name(canonical_case.description_path)),
-        body = tprint("assert_equal(\"%\", to_roman(%));", expected, number),
+        body = tprint("assert_equal(%, to_roman(%));", render_string(expected), number),
         skip = canonical_case.index > 0
     };
 }

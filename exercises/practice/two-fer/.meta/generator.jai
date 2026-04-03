@@ -1,7 +1,7 @@
 to_test_case :: (canonical_case: CanonicalCase) -> Test {
-    expected := tprint("\"%\"", canonical_case.expected.str);
+    expected := render_string(canonical_case.expected.str);
     has_name, name := get_string_property(canonical_case.input, "name");
-    name = ifx has_name tprint("\"%\"", name) else "";
+    name = ifx has_name render_string(name) else "";
 
     return Test.{
         name = to_test_name(canonical_case.description_path),
