@@ -86,11 +86,15 @@ add_test_cases :: (value: JSON_Value, description_path: []string, out_cases: *[.
     array_add(*current_path, description);
 
     has_cases, cases := get_array_property(*value, "cases");
-    if has_cases  for cases  add_test_cases(it, current_path, out_cases);
-
-    canonical_case := parse_test_case(value, current_path);
-    canonical_case.index = out_cases.count;
-    array_add(out_cases, canonical_case);
+    if has_cases {
+        for cases {
+            add_test_cases(it, current_path, out_cases);
+        }
+    } else {
+        canonical_case := parse_test_case(value, current_path);
+        canonical_case.index = out_cases.count;
+        array_add(out_cases, canonical_case);
+    }
 }
 
 parse_test_case :: (value: JSON_Value, description_path: []string) -> CanonicalCase {
