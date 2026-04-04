@@ -5,6 +5,7 @@ CanonicalCase :: struct {
     index: int;
     uuid: string;
     reimplements: string;
+    description: string;
     description_path: []string;
     property: string;
     scenarios: []string;
@@ -87,9 +88,7 @@ add_test_cases :: (value: JSON_Value, description_path: []string, out_cases: *[.
 
     has_cases, cases := get_array_property(*value, "cases");
     if has_cases {
-        for cases {
-            add_test_cases(it, current_path, out_cases);
-        }
+        for cases  add_test_cases(it, current_path, out_cases);
     } else {
         canonical_case := parse_test_case(value, current_path);
         canonical_case.index = out_cases.count;
@@ -114,6 +113,9 @@ parse_test_case :: (value: JSON_Value, description_path: []string) -> CanonicalC
 
     _, expected := get_property_pointer(*value, "expected");
     out.expected = expected;
+
+    _, description := get_string_property(*value, "description"); 
+    out.description = description;
 
     has_reimplements, reimplements := get_string_property(*value, "reimplements");
     if has_reimplements  out.reimplements = reimplements;
