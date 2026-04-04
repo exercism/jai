@@ -5,7 +5,7 @@ run_tests :: () {
 }
 
 no_name_given :: () {
-    assert_equal("One for you, one for me.", two_fer(""));
+    assert_equal("One for you, one for me.", two_fer());
 }
 
 a_name_given :: () {
