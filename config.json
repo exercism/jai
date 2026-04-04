@@ -107,6 +107,38 @@
       }
     ]
   },
+  "key_features": [
+    {
+      "title": "Fast",
+      "content": "Jai code compiles and runs extremely fast.",
+      "icon": "fast"
+    },
+    {
+      "title": "Productive",
+      "content": "Jai is a pragmatic language, designed to increase productivity.",
+      "icon": "productive"
+    },
+    {
+      "title": "Advanced metaprogramming",
+      "content": "Jai code can be inspected, modified and run at compile-time.",
+      "icon": "homoiconic"
+    },
+    {
+      "title": "Easy to build",
+      "content": "Jai's build system is defined as Jai code. No need to learn a separate build system.",
+      "icon": "expressive"
+    },
+    {
+      "title": "Lean",
+      "content": "Jai has a negligible runtime overhead.",
+      "icon": "small"
+    },
+    {
+      "title": "Cross-platform",
+      "content": "Jai runs on Windows, Linux, macOS, Android, iOS, and the web.",
+      "icon": "cross-platform"
+    }
+  ],
   "tags": [
     "execution_mode/compiled",
     "paradigm/array",
