@@ -7,6 +7,7 @@
 Test :: struct {
     name: string;
     body: string;
+    multiline_body: []string;
     skip: bool;
 }
 
@@ -23,17 +24,27 @@ build_test_file_contents :: (tests: [] Test) -> string {
     builder: String_Builder;
 
     print_to_builder(*builder, "run_tests :: () {\n");
-    for tests {
-        if it.skip {
-            print_to_builder(*builder, "    skip(%());\n", it.name);
+    for test: tests {
+        if test.skip {
+            print_to_builder(*builder, "    skip(%());\n", test.name);
         } else {
-            print_to_builder(*builder, "    %();\n", it.name);
+            print_to_builder(*builder, "    %();\n", test.name);
         }
     }
     print_to_builder(*builder, "}\n");
 
-    for tests {
-        print_to_builder(*builder, "\n% :: () {\n    %\n}\n", it.name, it.body);
+    for test: tests {
+        print_to_builder(*builder, "\n% :: () {\n", test.name);
+
+        if test.multiline_body.count > 0 {
+            for line: test.multiline_body {
+                print_to_builder(*builder, "    %\n", line);
+            }
+        } else {
+            print_to_builder(*builder, "    %\n", test.body);
+        }
+
+        print_to_builder(*builder, "}\n");
     }
 
     print_to_builder(*builder, "\n");
