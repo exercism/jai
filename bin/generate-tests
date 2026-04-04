@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # Synopsis:
-# Run the generator for each exercise. This will regenerate the test suite
+# Run the test generator for each exercise. This will regenerate the tests
 # for each exercise based on the canonical data.
 
 # Example: run all exercise generators
-# bin/run-generators
+# bin/generate-tests
 
 # Example: run single exercise generator
-# bin/run-generators two-fer
+# bin/generate-tests two-fer
 
 set -eo pipefail
 

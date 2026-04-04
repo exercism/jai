@@ -70,6 +70,8 @@ fi
 exercise_dir="exercises/practice/${slug}"
 files=$(jq -r --arg dir "${exercise_dir}" '.files | to_entries | map({key: .key, value: (.value | map("'"'"'" + $dir + "/" + . + "'"'"'") | join(" and "))}) | from_entries' "${exercise_dir}/.meta/config.json")
 
+./bin/update-test-module "${slug}"
+
 generator_file="${exercise_dir}/.meta/generator.jai"
 cat << END_GENERATOR > "${generator_file}"
 to_test_case :: (canonical_case: CanonicalCase) -> Test {

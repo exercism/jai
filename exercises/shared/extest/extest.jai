@@ -44,6 +44,7 @@ add_test_result :: inline (test_name: string, status: TestStatus, message: strin
 
 before_running_tests :: () {
     set_build_options_dc(.{do_output=false});
+    context.started_at = current_time_monotonic();
 }
 
 after_running_tests :: () {
@@ -105,6 +106,7 @@ test_status_to_string :: inline (status: TestStatus) -> string {
 
 print_test_report :: () {
     failed_tests, passed_tests, skipped_tests := 0;
+    duration := to_float64_seconds(current_time_monotonic() - context.started_at);
 
     for test: context.test_run.tests {
         if test.status == {
@@ -117,7 +119,7 @@ print_test_report :: () {
                 skipped_tests += 1;
         }
     }
-    print("Test summary: total: %, failed: %, succeeded: %, skipped: %\n", failed_tests + passed_tests + skipped_tests, failed_tests, passed_tests, skipped_tests);
+    print("Test summary: total: %, failed: %, succeeded: %, skipped: %, duration: % seconds\n", failed_tests + passed_tests + skipped_tests, failed_tests, passed_tests, skipped_tests, duration);
 }
 
 running_in_test_runner :: inline () -> bool {
@@ -150,6 +152,7 @@ TestRun :: struct {
 
 #add_context test_run: TestRun;
 #add_context skip_test: bool;
+#add_context started_at: Apollo_Time;
 
 #import "Basic";
 #import "Compiler";
