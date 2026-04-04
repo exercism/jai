@@ -5,12 +5,14 @@ to_snake_case :: (str: string) -> string {
     last_char := #char "_";
 
     for str {
-        c := to_lower(it);
-
-        if c >= #char "a" && c <= #char "z" || c >= #char "0" && c <= #char "9" {
-            append(*builder, c);
-            last_char = c;
-        } else if c == #char " " {
+        if it >= #char "a" && it <= #char "z" || it >= #char "0" && it <= #char "9" {
+            append(*builder, it);
+            last_char = it;
+        } else if it >= #char "A" && it <= #char "Z" {
+            if last_char != #char "_"  append(*builder, "_");
+            append(*builder, to_lower(it));
+            last_char = to_lower(it);
+        } else if it == #char " " {
             if last_char != #char "_"  append(*builder, "_");
             last_char = #char "_";
         } else {
