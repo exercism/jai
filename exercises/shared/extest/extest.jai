@@ -24,6 +24,9 @@ assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #cal
     } else {
         message := sprint("Expected: %, actual: %", expected_value, actual_value);
         set_test_result(test_name, .FAILED, message, test_code);
+
+        // Short-circuit test execution to avoid cascading failures
+        `return;
     }
 }
 
@@ -35,12 +38,19 @@ skip :: (code: Code) #expand {
 }
 
 set_test_result :: inline (test_name: string, status: TestStatus, message: string, test_code: string) {
-    // TODO: support calling this multiple times from the same procedure
-    array_add(*context.test_run.tests, .{test_name, status, message, test_code});
+    test: TestResult = .{test_name, status, message, test_code};
 
-    if status == .FAILED {
-        context.test_run.status = .FAILED;
+    // If there already is a test result for this test name, it means the test has multiple assertions.
+    // As we short-circuit test execution on failure, the existing test result _must_ be a passing test,
+    // so we can safely overwrite the existing test result
+    if context.test_run.tests.count > 0 && context.test_run.tests[context.test_run.tests.count - 1].name == test_name {
+        context.test_run.tests[context.test_run.tests.count - 1] = test;
+    } else {
+        array_add(*context.test_run.tests, test);
     }
+
+    // If we have one failing test, the whole test run is considered failed
+    if status == .FAILED  context.test_run.status = .FAILED;
 }
 
 before_running_tests :: () {
