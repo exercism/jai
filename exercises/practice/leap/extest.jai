@@ -12,7 +12,7 @@ assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #cal
     if context.skip_test && !has_build_option("-run_skipped") {
         // We do not `#insert` the `expected` and `actual` values here, since the test is being 
         // skipped and we don't want to evaluate them at all.
-        add_test_result(test_name, .SKIPPED, "", test_code);
+        set_test_result(test_name, .SKIPPED, "", test_code);
         return;
     }
 
@@ -20,10 +20,10 @@ assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #cal
     actual_value   := #insert actual;
 
     if expected_value == actual_value {
-        add_test_result(test_name, .PASSED, "", test_code);
+        set_test_result(test_name, .PASSED, "", test_code);
     } else {
         message := sprint("Expected: %, actual: %", expected_value, actual_value);
-        add_test_result(test_name, .FAILED, message, test_code);
+        set_test_result(test_name, .FAILED, message, test_code);
     }
 }
 
@@ -34,7 +34,7 @@ skip :: (code: Code) #expand {
     #insert code;
 }
 
-add_test_result :: inline (test_name: string, status: TestStatus, message: string, test_code: string) {
+set_test_result :: inline (test_name: string, status: TestStatus, message: string, test_code: string) {
     array_add(*context.test_run.tests, .{test_name, status, message, test_code});
 
     if status == .FAILED {
