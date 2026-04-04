@@ -15,6 +15,10 @@ to_test_name :: (description_path: []string) -> string {
     return to_snake_case(combined_description);
 }
 
+to_test_name :: (description: string) -> string {
+    return to_snake_case(description);
+}
+
 build_test_file_contents :: (tests: [] Test) -> string {
     builder: String_Builder;
 
