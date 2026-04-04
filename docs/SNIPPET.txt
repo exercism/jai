@@ -1,1 +1,8 @@
-TODO: add snippet
+logged_call :: () #expand {
+    print("Started %\n", #this);
+    defer print("Finished %\n", #this);
+}
+
+main :: () {
+    logged_call();
+}
