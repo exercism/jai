@@ -42,6 +42,10 @@ add_test_result :: inline (test_name: string, status: TestStatus, message: strin
     }
 }
 
+before_running_tests :: () {
+    set_build_options_dc(.{do_output=false});
+}
+
 after_running_tests :: () {
     if running_in_test_runner() {
         write_json_test_report();
