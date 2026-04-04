@@ -9,7 +9,7 @@ assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #cal
     print_expression(*test_code_builder, compiler_get_nodes(call));
     test_code := builder_to_string(*test_code_builder);
 
-    if context.skip_test && !running_in_test_runner() {
+    if context.skip_test && !has_build_option("-run_skipped") {
         // We do not `#insert` the `expected` and `actual` values here, since the test is being 
         // skipped and we don't want to evaluate them at all.
         add_test_result(test_name, .SKIPPED, "", test_code);
@@ -48,7 +48,7 @@ before_running_tests :: () {
 }
 
 after_running_tests :: () {
-    if running_in_test_runner() {
+    if has_build_option("-json") {
         write_json_test_report();
     } else {
         print_test_report();
@@ -120,10 +120,6 @@ print_test_report :: () {
         }
     }
     print("Test summary: total: %, failed: %, succeeded: %, skipped: %, duration: % seconds\n", failed_tests + passed_tests + skipped_tests, failed_tests, passed_tests, skipped_tests, duration);
-}
-
-running_in_test_runner :: inline () -> bool {
-    return has_build_option("-test_runner");
 }
 
 has_build_option :: inline (arg: string) -> bool {
