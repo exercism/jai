@@ -8,7 +8,7 @@
     "representer": false,
     "analyzer": false
   },
-  "blurb": "TODO: add blurb",
+  "blurb": "Jai is a lean, fast language designed to be productive and efficient.",
   "version": 3,
   "online_editor": {
     "indent_style": "space",
@@ -134,8 +134,8 @@
       "icon": "small"
     },
     {
-      "title": "Cross-platform",
-      "content": "Jai runs on Windows, Linux, macOS, Android, iOS, and the web.",
+      "title": "Games",
+      "content": "Jai is built to make game development easier and more efficient.",
       "icon": "cross-platform"
     }
   ],
