@@ -106,5 +106,23 @@
         "difficulty": 1
       }
     ]
-  }
+  },
+  "tags": [
+    "execution_mode/compiled",
+    "paradigm/array",
+    "paradigm/imperative",
+    "paradigm/procedural",
+    "platform/android",
+    "platform/ios",
+    "platform/linux",
+    "platform/mac",
+    "platform/web",
+    "platform/windows",
+    "runtime/standalone_executable",
+    "runtime/wasmtime",
+    "typing/static",
+    "typing/strong",
+    "used_for/cross_platform_development",
+    "used_for/games"
+  ]
 }
