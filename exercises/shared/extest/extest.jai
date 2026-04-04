@@ -42,7 +42,7 @@ add_test_result :: inline (test_name: string, status: TestStatus, message: strin
     }
 }
 
-finished_running_tests :: () {
+after_running_tests :: () {
     if running_in_test_runner() {
         write_json_test_report();
     } else {

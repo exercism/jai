@@ -1,4 +1,4 @@
-#run {
+run_tests :: () {
     number_1_is_i();
     skip(number_2_is_ii());
     skip(number_3_is_iii());
@@ -137,7 +137,9 @@ number_3999_is_mmmcmxcix :: () {
 }
 
 #run {
-    finished_running_tests();
+    before_running_tests();
+    run_tests();
+    after_running_tests();
 }
 
 #load "solution.jai";

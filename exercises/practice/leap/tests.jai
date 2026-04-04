@@ -1,4 +1,4 @@
-#run {
+run_tests :: () {
     year_not_divisible_by_4_in_common_year();
     skip(year_divisible_by_2_not_divisible_by_4_in_common_year());
     skip(year_divisible_by_4_not_divisible_by_100_in_leap_year());
@@ -47,7 +47,9 @@ year_divisible_by_200_not_divisible_by_400_in_common_year :: () {
 }
 
 #run {
-    finished_running_tests();
+    before_running_tests();
+    run_tests();
+    after_running_tests();
 }
 
 #load "solution.jai";

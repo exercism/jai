@@ -55,7 +55,7 @@ to_test_name :: (description_path: []string) -> string {
 build_test_file_contents :: (tests: [] Test) -> string {
     builder: String_Builder;
 
-    print_to_builder(*builder, "#run {\n");
+    print_to_builder(*builder, "run_tests :: () {\n");
     for tests {
         if it.skip {
             print_to_builder(*builder, "    skip(%());\n", it.name);
@@ -71,7 +71,9 @@ build_test_file_contents :: (tests: [] Test) -> string {
 
     print_to_builder(*builder, "\n");
     print_to_builder(*builder, "#run {\n");
-    print_to_builder(*builder, "    finished_running_tests();\n");
+    print_to_builder(*builder, "    before_running_tests();\n");
+    print_to_builder(*builder, "    run_tests();\n");
+    print_to_builder(*builder, "    after_running_tests();\n");
     print_to_builder(*builder, "}\n");
     print_to_builder(*builder, "\n");
     print_to_builder(*builder, "#load \"solution.jai\";\n");

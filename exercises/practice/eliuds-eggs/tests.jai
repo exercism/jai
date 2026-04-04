@@ -1,4 +1,4 @@
-#run {
+run_tests :: () {
     count_0_eggs();
     skip(count_1_egg());
     skip(count_4_eggs());
@@ -22,7 +22,9 @@ count_13_eggs :: () {
 }
 
 #run {
-    finished_running_tests();
+    before_running_tests();
+    run_tests();
+    after_running_tests();
 }
 
 #load "solution.jai";

@@ -1,4 +1,4 @@
-#run {
+run_tests :: () {
     no_name_given();
     skip(a_name_given());
     skip(another_name_given());
@@ -17,7 +17,9 @@ another_name_given :: () {
 }
 
 #run {
-    finished_running_tests();
+    before_running_tests();
+    run_tests();
+    after_running_tests();
 }
 
 #load "solution.jai";
