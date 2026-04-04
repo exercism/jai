@@ -32,24 +32,8 @@ render_string :: (str: string) -> string {
 }
 
 to_test_name :: (description_path: []string) -> string {
-    builder: String_Builder;
-    init_string_builder(*builder);
-
-    for description: description_path {
-        to_lower_in_place(description);
-
-        for description {
-            if it >= #char "a" && it <= #char "z" || it >= #char "0" && it <= #char "9" {
-                append(*builder, it);
-            } else if it == #char " " {
-                append(*builder, "_");
-            }
-        }
-
-        if it_index > 0  append(*builder, "_");
-    }
-
-   return builder_to_string(*builder);
+    combined_description := join(..description_path, " ");
+    return to_snake_case(combined_description);
 }
 
 build_test_file_contents :: (tests: [] Test) -> string {
