@@ -4,7 +4,7 @@ to_test_case :: (canonical_case: CanonicalCase) -> Test {
 
     return Test.{
         name = tprint("number_%", to_test_name(canonical_case.description_path)),
-        body = tprint("assert_equal(%, to_roman(%));", render_string(expected), number),
+        body = tprint("assert_equal(%, to_roman(%));", escape_string(expected), number),
         skip = canonical_case.index > 0
     };
 }

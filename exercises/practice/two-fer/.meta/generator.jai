@@ -1,7 +1,7 @@
 to_test_case :: (canonical_case: CanonicalCase) -> Test {
-    expected := render_string(canonical_case.expected.str);
+    expected := escape_string(canonical_case.expected.str);
     _, name := get_string_property(canonical_case.input, "name");
-    name = ifx name.count render_string(name) else "";
+    name = ifx name.count escape_string(name) else "";
 
     return Test.{
         name = to_test_name(canonical_case.description_path),

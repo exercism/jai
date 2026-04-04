@@ -21,4 +21,25 @@ to_snake_case :: (str: string) -> string {
    return builder_to_string(*builder);
 }
 
+escape_string :: (str: string) -> string {
+    builder: String_Builder;
+    init_string_builder(*builder);
+
+    append(*builder, "\"");
+
+    for char: str {
+        if char == {
+            case #char "\\"; append(*builder, "\\\\");
+            case #char "\""; append(*builder, "\\\"");
+            case #char "\n"; append(*builder, "\\n");
+            case #char "\r"; append(*builder, "\\r");
+            case #char "\t"; append(*builder, "\\t");
+            case; append(*builder, char);
+        }
+    }
+
+    append(*builder, "\"");
+    return builder_to_string(*builder);
+}
+
 #import "String";
