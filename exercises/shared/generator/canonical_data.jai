@@ -8,6 +8,7 @@ CanonicalCase :: struct {
     description: string;
     description_path: []string;
     property: string;
+    error: string;
     scenarios: []string;
     input: *JSON_Value;
     expected: *JSON_Value;
@@ -113,6 +114,11 @@ parse_test_case :: (value: JSON_Value, description_path: []string) -> CanonicalC
 
     _, expected := get_property_pointer(*value, "expected");
     out.expected = expected;
+
+    if expected.type == .OBJECT {
+        has_error, error := get_string_property(expected, "error");
+        if has_error  out.error = error;
+    }
 
     _, description := get_string_property(*value, "description"); 
     out.description = description;
