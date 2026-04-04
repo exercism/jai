@@ -29,7 +29,7 @@ copy_example_or_examplar_to_solution() {
 }
 
 run_tests() {
-    jai -quiet tests.jai
+    jai tests.jai - -run_skipped
 }
 
 verify_exercise() {
