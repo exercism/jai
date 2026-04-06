@@ -1,0 +1,19 @@
+{
+  "authors": [
+    "erikschierboom"
+  ],
+  "files": {
+    "solution": [
+      "solution.jai"
+    ],
+    "test": [
+      "tests.jai"
+    ],
+    "example": [
+      ".meta/example.jai"
+    ]
+  },
+  "blurb": "Given an age in seconds, calculate how old someone is in terms of a given planet's solar years.",
+  "source": "Partially inspired by Chapter 1 in Chris Pine's online Learn to Program tutorial.",
+  "source_url": "https://pine.fm/LearnToProgram/chap_01.html"
+}
