@@ -106,6 +106,14 @@
         "difficulty": 1
       },
       {
+        "slug": "bob",
+        "name": "Bob",
+        "uuid": "69a59f74-137a-413d-84ee-4e21d50f3690",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
         "slug": "pangram",
         "name": "Pangram",
         "uuid": "66f28d46-b899-4c35-bf10-c30e3fe5db93",
