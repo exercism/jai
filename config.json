@@ -106,6 +106,14 @@
         "difficulty": 1
       },
       {
+        "slug": "scrabble-score",
+        "name": "Scrabble Score",
+        "uuid": "3439b4b4-9ecd-4ed8-b89e-01479a7d7521",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 2
+      },
+      {
         "slug": "line-up",
         "name": "Line Up",
         "uuid": "a247496e-79a4-4249-9e78-9df3f626f5d1",
