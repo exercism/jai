@@ -34,6 +34,22 @@
   "exercises": {
     "practice": [
       {
+        "slug": "difference-of-squares",
+        "name": "Difference of Squares",
+        "uuid": "04c17584-c55f-41a0-9c9b-1630110a34bc",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 1
+      },
+      {
+        "slug": "hamming",
+        "name": "Hamming",
+        "uuid": "9a3ffc1a-3242-4caa-ab7e-5f7963463aab",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 1
+      },
+      {
         "slug": "hello-world",
         "name": "Hello World",
         "uuid": "1138be6d-50dc-4a45-9ebf-147292916c18",
@@ -58,12 +74,12 @@
         "difficulty": 1
       },
       {
-        "slug": "roman-numerals",
-        "name": "Roman Numerals",
-        "uuid": "8dbb825b-af85-41d4-9847-f6fbe3997eb4",
+        "slug": "collatz-conjecture",
+        "name": "Collatz Conjecture",
+        "uuid": "72fb147c-1762-4075-9936-19316bf93d40",
         "practices": [],
         "prerequisites": [],
-        "difficulty": 3
+        "difficulty": 2
       },
       {
         "slug": "eliuds-eggs",
@@ -74,54 +90,6 @@
         "difficulty": 2
       },
       {
-        "slug": "difference-of-squares",
-        "name": "Difference of Squares",
-        "uuid": "04c17584-c55f-41a0-9c9b-1630110a34bc",
-        "practices": [],
-        "prerequisites": [],
-        "difficulty": 1
-      },
-      {
-        "slug": "collatz-conjecture",
-        "name": "Collatz Conjecture",
-        "uuid": "72fb147c-1762-4075-9936-19316bf93d40",
-        "practices": [],
-        "prerequisites": [],
-        "difficulty": 2
-      },
-      {
-        "slug": "reverse-string",
-        "name": "Reverse String",
-        "uuid": "46b62fe3-546b-4501-ba39-d554b40590d7",
-        "practices": [],
-        "prerequisites": [],
-        "difficulty": 3
-      },
-      {
-        "slug": "hamming",
-        "name": "Hamming",
-        "uuid": "9a3ffc1a-3242-4caa-ab7e-5f7963463aab",
-        "practices": [],
-        "prerequisites": [],
-        "difficulty": 1
-      },
-      {
-        "slug": "space-age",
-        "name": "Space Age",
-        "uuid": "fe7f9472-902a-4a27-b0bd-d85d45c44151",
-        "practices": [],
-        "prerequisites": [],
-        "difficulty": 3
-      },
-      {
-        "slug": "raindrops",
-        "name": "Raindrops",
-        "uuid": "afbb308d-d880-4e36-82a4-27019430624b",
-        "practices": [],
-        "prerequisites": [],
-        "difficulty": 3
-      },
-      {
         "slug": "scrabble-score",
         "name": "Scrabble Score",
         "uuid": "3439b4b4-9ecd-4ed8-b89e-01479a7d7521",
@@ -130,17 +98,17 @@
         "difficulty": 2
       },
       {
-        "slug": "line-up",
-        "name": "Line Up",
-        "uuid": "a247496e-79a4-4249-9e78-9df3f626f5d1",
-        "practices": [],
-        "prerequisites": [],
-        "difficulty": 4
-      },
-      {
         "slug": "bob",
         "name": "Bob",
         "uuid": "69a59f74-137a-413d-84ee-4e21d50f3690",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
+        "slug": "line-up",
+        "name": "Line Up",
+        "uuid": "a247496e-79a4-4249-9e78-9df3f626f5d1",
         "practices": [],
         "prerequisites": [],
         "difficulty": 3
@@ -154,12 +122,36 @@
         "difficulty": 3
       },
       {
-        "slug": "isogram",
-        "name": "Isogram",
-        "uuid": "847735a5-6c1b-474d-8693-cc7cf36772ac",
+        "slug": "raindrops",
+        "name": "Raindrops",
+        "uuid": "afbb308d-d880-4e36-82a4-27019430624b",
         "practices": [],
         "prerequisites": [],
-        "difficulty": 4
+        "difficulty": 3
+      },
+      {
+        "slug": "reverse-string",
+        "name": "Reverse String",
+        "uuid": "46b62fe3-546b-4501-ba39-d554b40590d7",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
+        "slug": "roman-numerals",
+        "name": "Roman Numerals",
+        "uuid": "8dbb825b-af85-41d4-9847-f6fbe3997eb4",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
+        "slug": "space-age",
+        "name": "Space Age",
+        "uuid": "fe7f9472-902a-4a27-b0bd-d85d45c44151",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
       },
       {
         "slug": "sum-of-multiples",
@@ -168,6 +160,14 @@
         "practices": [],
         "prerequisites": [],
         "difficulty": 3
+      },
+      {
+        "slug": "isogram",
+        "name": "Isogram",
+        "uuid": "847735a5-6c1b-474d-8693-cc7cf36772ac",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 4
       }
     ]
   },
