@@ -1,14 +1,14 @@
 to_test_case :: (canonical_case: CanonicalCase) -> Test {
-    _, number := get_number_property(canonical_case.input, "number");
+    _, number := get_property(canonical_case.input, "number");
 
     lines: [..] string;
     if canonical_case.error {
-        array_add(*lines, tprint("ok, _ := steps(%);", number));
+        array_add(*lines, tprint("ok, _ := steps(%);", to_code(number)));
         array_add(*lines, tprint("assert_equal(false, ok);"));
     } else {
-        array_add(*lines, tprint("ok, number_of_steps := steps(%);", number));
+        array_add(*lines, tprint("ok, number_of_steps := steps(%);", to_code(number)));
         array_add(*lines, tprint("assert_equal(true, ok);"));
-        array_add(*lines, tprint("assert_equal(%, number_of_steps);", canonical_case.expected.number));
+        array_add(*lines, tprint("assert_equal(%, number_of_steps);", to_code(canonical_case.expected)));
     }
 
     return Test.{

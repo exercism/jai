@@ -1,10 +1,9 @@
 to_test_case :: (canonical_case: CanonicalCase) -> Test {
-    expected := canonical_case.expected.boolean;
-    _, year := get_number_property(canonical_case.input, "year");
+    _, year := get_property(canonical_case.input, "year");
 
     return Test.{
         name = to_test_name(canonical_case.description_path),
-        body = tprint("assert_equal(%, is_leap_year(%));", expected, year),
+        body = tprint("assert_equal(%, is_leap_year(%));", to_code(canonical_case.expected), to_code(year)),
         skip = canonical_case.index > 0
     };
 }
