@@ -106,6 +106,14 @@
         "difficulty": 1
       },
       {
+        "slug": "isogram",
+        "name": "Isogram",
+        "uuid": "847735a5-6c1b-474d-8693-cc7cf36772ac",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 4
+      },
+      {
         "slug": "sum-of-multiples",
         "name": "Sum of Multiples",
         "uuid": "07179cb2-852f-4ffd-addb-9472e04243d8",
