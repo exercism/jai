@@ -1,10 +1,9 @@
 to_test_case :: (canonical_case: CanonicalCase) -> Test {
-    expected := canonical_case.expected.number;
-    _, number := get_number_property(canonical_case.input, "number");
+    _, number := get_property(canonical_case.input, "number");
 
     return Test.{
         name = to_test_name(canonical_case.description),
-        body = tprint("assert_equal(%, %(%));", expected, to_snake_case(canonical_case.property), number),
+        body = tprint("assert_equal(%, %(%));", to_code(canonical_case.expected), to_snake_case(canonical_case.property), to_code(number)),
         skip = canonical_case.index > 0
     };
 }

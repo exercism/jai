@@ -23,7 +23,7 @@ to_snake_case :: (str: string) -> string {
    return builder_to_string(*builder);
 }
 
-output :: (value: JSON_Value) -> string {
+to_code :: (value: JSON_Value) -> string {
     builder: String_Builder;
     init_string_builder(*builder);
 
@@ -40,7 +40,7 @@ output :: (value: JSON_Value) -> string {
             append(*builder, ".[");
             for value.array {
                 if it_index > 0  append(*builder, ", ");
-                append(*builder, output(it));
+                append(*builder, to_code(it));
             }
             append(*builder, "]");
         case .OBJECT;
@@ -51,7 +51,7 @@ output :: (value: JSON_Value) -> string {
                 first = false;
                 append(*builder, escape_string(key));
                 append(*builder, ": ");
-                append(*builder, output(val));
+                append(*builder, to_code(val));
             }
             append(*builder, "}");
     }

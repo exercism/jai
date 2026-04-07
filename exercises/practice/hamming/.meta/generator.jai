@@ -1,15 +1,15 @@
 to_test_case :: (canonical_case: CanonicalCase) -> Test {
-    _, strand1 := get_string_property(canonical_case.input, "strand1");
-    _, strand2 := get_string_property(canonical_case.input, "strand2");
+    _, strand1 := get_property(canonical_case.input, "strand1");
+    _, strand2 := get_property(canonical_case.input, "strand2");
 
     lines: [..] string;
     if canonical_case.error {
-        array_add(*lines, tprint("ok, _ := hamming_distance(%, %);", escape_string(strand1), escape_string(strand2)));
+        array_add(*lines, tprint("ok, _ := hamming_distance(%, %);", to_code(strand1), to_code(strand2)));
         array_add(*lines, tprint("assert_equal(false, ok);"));
     } else {
-        array_add(*lines, tprint("ok, distance := hamming_distance(%, %);", escape_string(strand1), escape_string(strand2)));
+        array_add(*lines, tprint("ok, distance := hamming_distance(%, %);", to_code(strand1), to_code(strand2)));
         array_add(*lines, tprint("assert_equal(true, ok);"));
-        array_add(*lines, tprint("assert_equal(%, distance);", canonical_case.expected.number));
+        array_add(*lines, tprint("assert_equal(%, distance);", to_code(canonical_case.expected)));
     }
 
     return Test.{
