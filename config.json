@@ -112,6 +112,46 @@
         "practices": [],
         "prerequisites": [],
         "difficulty": 2
+      },
+      {
+        "slug": "line-up",
+        "name": "Line Up",
+        "uuid": "a247496e-79a4-4249-9e78-9df3f626f5d1",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 4
+      },
+      {
+        "slug": "bob",
+        "name": "Bob",
+        "uuid": "69a59f74-137a-413d-84ee-4e21d50f3690",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
+        "slug": "pangram",
+        "name": "Pangram",
+        "uuid": "66f28d46-b899-4c35-bf10-c30e3fe5db93",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
+        "slug": "isogram",
+        "name": "Isogram",
+        "uuid": "847735a5-6c1b-474d-8693-cc7cf36772ac",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 4
+      },
+      {
+        "slug": "sum-of-multiples",
+        "name": "Sum of Multiples",
+        "uuid": "07179cb2-852f-4ffd-addb-9472e04243d8",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
       }
     ]
   },
