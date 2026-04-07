@@ -98,6 +98,14 @@
         "difficulty": 2
       },
       {
+        "slug": "allergies",
+        "name": "Allergies",
+        "uuid": "2bd689b7-b030-4b4f-af04-1471959642f7",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
         "slug": "bob",
         "name": "Bob",
         "uuid": "69a59f74-137a-413d-84ee-4e21d50f3690",

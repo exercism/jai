@@ -23,6 +23,48 @@ to_snake_case :: (str: string) -> string {
    return builder_to_string(*builder);
 }
 
+to_enum :: (str: string) -> string {
+    to_upper_in_place(str);
+    return tprint(".%", str);
+}
+
+to_enum :: (str: JSON_Value) -> string {
+    return to_enum(str.str);
+}
+
+to_code :: (value: string) -> string {
+    return escape_string(value);
+}
+
+to_code :: (value: int) -> string {
+    return tprint("%", value);
+}
+
+to_code :: (value: float64) -> string {
+    return tprint("%", value);
+}
+
+to_code :: (value: bool) -> string {
+    return ifx value then "true" else "false";
+}
+
+to_code :: (values: []$T, convert_elements := true) -> string {
+    builder: String_Builder;
+    init_string_builder(*builder);
+
+    append(*builder, ".[");
+    for values {
+        if it_index > 0  append(*builder, ", ");
+        if convert_elements {
+            append(*builder, to_code(it));
+        } else {
+            print_to_builder(*builder, "%", it);
+        }
+    }
+    append(*builder, "]");
+    return builder_to_string(*builder);
+}
+
 to_code :: (value: JSON_Value) -> string {
     builder: String_Builder;
     init_string_builder(*builder);
@@ -31,11 +73,11 @@ to_code :: (value: JSON_Value) -> string {
         case .NULL;
             append(*builder, "null");
         case .BOOLEAN;
-            append(*builder, ifx value.boolean then "true" else "false");
+            append(*builder, to_code(value.boolean));
         case .NUMBER;
-            print_to_builder(*builder, "%", value.number);
+            append(*builder, to_code(value.number));
         case .STRING;
-            append(*builder, escape_string(value.str));
+            append(*builder, to_code(value.str));
         case .ARRAY;
             append(*builder, ".[");
             for value.array {

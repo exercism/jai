@@ -122,17 +122,18 @@ parse_array :: (str: string) -> [] JSON_Value, string {
     remainder := trim_left(advance(str));
 
     while remainder {
+        if remainder[0] == #char "]" {
+            remainder = advance(remainder);
+            break;
+        }
+
         value: JSON_Value;
         value, remainder = parse_value(remainder);
         array_add(*result, value);
         
         remainder = trim_left(remainder);
-        if remainder[0] == {
-            case #char "]";
-                remainder = advance(remainder);
-                break;
-            case #char ",";
-                remainder = advance(remainder);
+        if remainder[0] == #char "," {
+            remainder = advance(remainder);
         }
     }
 
