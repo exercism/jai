@@ -34,6 +34,14 @@
   "exercises": {
     "practice": [
       {
+        "slug": "darts",
+        "name": "Darts",
+        "uuid": "8b0c2787-cbe8-4221-bdbe-25227cd0aaa4",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 1
+      },
+      {
         "slug": "difference-of-squares",
         "name": "Difference of Squares",
         "uuid": "04c17584-c55f-41a0-9c9b-1630110a34bc",
