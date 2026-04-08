@@ -194,6 +194,14 @@
         "difficulty": 4
       },
       {
+        "slug": "protein-translation",
+        "name": "Protein Translation",
+        "uuid": "2dcc4486-6d52-47cb-93fa-234b5f3b9cf1",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 4
+      },
+      {
         "slug": "rotational-cipher",
         "name": "Rotational Cipher",
         "uuid": "30b3be11-2b84-4a61-b16d-120cb6d38ca9",
