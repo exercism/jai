@@ -5,7 +5,7 @@ to_test_case :: (canonical_case: CanonicalCase) -> Test {
 
     return Test.{
         name = to_test_name(canonical_case.description_path),
-        body = tprint("assert_equal(%, age(%, %));", expected, to_enum(planet), seconds),
+        body = tprint("assert_equal(%, age(%, %));", to_code(expected), to_enum(planet), to_code(seconds)),
         skip = canonical_case.index > 0
     };
 }
