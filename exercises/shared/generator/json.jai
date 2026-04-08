@@ -25,41 +25,47 @@ JSON_Value :: struct {
 
 JSON_Object :: Table(string, JSON_Value);
 
-get_boolean_property :: (value: *JSON_Value, property: string) -> bool, bool {
-    ok, json_value := get_property(value, property);
+get_boolean_property :: (value: *JSON_Value, property_path: ..string) -> bool, bool {
+    ok, json_value := get_property(value, ..property_path);
     if !ok return false, false;
     return true, json_value.boolean;
 }
 
-get_number_property :: (value: *JSON_Value, property: string) -> bool, float64 {
-    ok, json_value := get_property(value, property);
+get_number_property :: (value: *JSON_Value, property_path: ..string) -> bool, float64 {
+    ok, json_value := get_property(value, ..property_path);
     if !ok return false, 0.0;
     return true, json_value.number;
 }
 
-get_string_property :: (value: *JSON_Value, property: string) -> bool, string {
-    ok, json_value := get_property(value, property);
+get_string_property :: (value: *JSON_Value, property_path: ..string) -> bool, string {
+    ok, json_value := get_property(value, ..property_path);
     if !ok return false, "";
     return true, json_value.str;
 }
 
-get_array_property :: (value: *JSON_Value, property: string) -> bool, []JSON_Value {
-    ok, json_value := get_property(value, property);
+get_array_property :: (value: *JSON_Value, property_path: ..string) -> bool, []JSON_Value {
+    ok, json_value := get_property(value, ..property_path);
     if !ok return false, .[];
     return true, json_value.array;
 }
 
-get_property :: (value: *JSON_Value, property: string) -> bool, JSON_Value {
-    assert(value.type == .OBJECT);
-    ok, property_value := table_find(value.object, property);
-    return ok, property_value;
+get_property :: (value: *JSON_Value, property_path: ..string) -> bool, JSON_Value {
+    ok, pointer := get_property_pointer(value, ..property_path);
+    if !ok return false, JSON_Value.{};
+    return true, pointer.*;
 }
 
-get_property_pointer :: (value: *JSON_Value, property: string) -> bool, *JSON_Value {
-    assert(value.type == .OBJECT);
-    property_value_pointer := table_find_pointer(value.object, property);
-    if property_value_pointer == null return false, property_value_pointer;
-    return true, property_value_pointer;
+get_property_pointer :: (value: *JSON_Value, property_path: ..string) -> bool, *JSON_Value {
+    current := value;
+
+    for property: property_path {
+        assert(current.type == .OBJECT);
+        current = table_find_pointer(current.object, property);
+        if current == null return false, null;
+    }
+
+    if current == null return false, null;
+    return true, current;
 }
 
 parse_json :: (content: string) -> JSON_Value {
