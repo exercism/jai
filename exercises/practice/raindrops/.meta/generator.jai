@@ -9,7 +9,7 @@ to_test_case :: (canonical_case: CanonicalCase) -> Test {
 
     return Test.{
         name = name,
-        body = tprint("assert_equal(%, convert(%));", escape_string(expected), number),
+        body = tprint("assert_equal(%, convert(%));", to_code(expected), to_code(number)),
         skip = canonical_case.index > 0
     };
 }

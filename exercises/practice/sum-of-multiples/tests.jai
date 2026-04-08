@@ -66,7 +66,7 @@ all_numbers_are_multiples_of_1 :: () {
 }
 
 no_factors_means_an_empty_sum :: () {
-    assert_equal(0, sum(.[0], 10000));
+    assert_equal(0, sum(.[], 10000));
 }
 
 the_only_multiple_of_0_is_0 :: () {
