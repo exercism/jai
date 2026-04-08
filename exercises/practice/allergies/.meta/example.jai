@@ -1,4 +1,4 @@
-ALLERGEN :: enum u8 #specified {
+Allergen :: enum u8 #specified {
     EGGS         :: 0b00000001;
     PEANUTS      :: 0b00000010;
     SHELLFISH    :: 0b00000100;
@@ -9,14 +9,14 @@ ALLERGEN :: enum u8 #specified {
     CATS         :: 0b10000000;
 };
 
-is_allergic_to :: (allergen: ALLERGEN, score: int) -> bool {
+is_allergic_to :: (allergen: Allergen, score: int) -> bool {
     return score & cast(u8)allergen != 0;
 }
 
-list :: (score: int) -> []ALLERGEN {
-    allergies: [..]ALLERGEN;
+list :: (score: int) -> []Allergen {
+    allergies: [..]Allergen;
 
-    for enum_values_as_enum(ALLERGEN) {
+    for enum_values_as_enum(Allergen) {
         if is_allergic_to(it, score) array_add(*allergies, it);
     }
 
