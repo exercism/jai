@@ -23,13 +23,13 @@ to_snake_case :: (str: string) -> string {
    return builder_to_string(*builder);
 }
 
-to_enum :: (str: string) -> string {
+to_enum :: (str: string, name := "") -> string {
     to_upper_in_place(str);
-    return tprint(".%", str);
+    return tprint("%.%", name, str);
 }
 
-to_enum :: (str: JSON_Value) -> string {
-    return to_enum(str.str);
+to_enum :: (str: JSON_Value, name := "") -> string {
+    return to_enum(str.str, name);
 }
 
 to_code :: (value: string) -> string {
