@@ -219,74 +219,74 @@ list_when_no_allergies :: () {
 list_when_just_eggs :: () {
     allergens := list(1);
     assert_equal(1, allergens.count);
-    assert_equal(ALLERGEN.EGGS, allergens[0]);
+    assert_equal(Allergen.EGGS, allergens[0]);
 }
 
 list_when_just_peanuts :: () {
     allergens := list(2);
     assert_equal(1, allergens.count);
-    assert_equal(ALLERGEN.PEANUTS, allergens[0]);
+    assert_equal(Allergen.PEANUTS, allergens[0]);
 }
 
 list_when_just_strawberries :: () {
     allergens := list(8);
     assert_equal(1, allergens.count);
-    assert_equal(ALLERGEN.STRAWBERRIES, allergens[0]);
+    assert_equal(Allergen.STRAWBERRIES, allergens[0]);
 }
 
 list_when_eggs_and_peanuts :: () {
     allergens := list(3);
     assert_equal(2, allergens.count);
-    assert_equal(ALLERGEN.EGGS, allergens[0]);
-    assert_equal(ALLERGEN.PEANUTS, allergens[1]);
+    assert_equal(Allergen.EGGS, allergens[0]);
+    assert_equal(Allergen.PEANUTS, allergens[1]);
 }
 
 list_when_more_than_eggs_but_not_peanuts :: () {
     allergens := list(5);
     assert_equal(2, allergens.count);
-    assert_equal(ALLERGEN.EGGS, allergens[0]);
-    assert_equal(ALLERGEN.SHELLFISH, allergens[1]);
+    assert_equal(Allergen.EGGS, allergens[0]);
+    assert_equal(Allergen.SHELLFISH, allergens[1]);
 }
 
 list_when_lots_of_stuff :: () {
     allergens := list(248);
     assert_equal(5, allergens.count);
-    assert_equal(ALLERGEN.STRAWBERRIES, allergens[0]);
-    assert_equal(ALLERGEN.TOMATOES, allergens[1]);
-    assert_equal(ALLERGEN.CHOCOLATE, allergens[2]);
-    assert_equal(ALLERGEN.POLLEN, allergens[3]);
-    assert_equal(ALLERGEN.CATS, allergens[4]);
+    assert_equal(Allergen.STRAWBERRIES, allergens[0]);
+    assert_equal(Allergen.TOMATOES, allergens[1]);
+    assert_equal(Allergen.CHOCOLATE, allergens[2]);
+    assert_equal(Allergen.POLLEN, allergens[3]);
+    assert_equal(Allergen.CATS, allergens[4]);
 }
 
 list_when_everything :: () {
     allergens := list(255);
     assert_equal(8, allergens.count);
-    assert_equal(ALLERGEN.EGGS, allergens[0]);
-    assert_equal(ALLERGEN.PEANUTS, allergens[1]);
-    assert_equal(ALLERGEN.SHELLFISH, allergens[2]);
-    assert_equal(ALLERGEN.STRAWBERRIES, allergens[3]);
-    assert_equal(ALLERGEN.TOMATOES, allergens[4]);
-    assert_equal(ALLERGEN.CHOCOLATE, allergens[5]);
-    assert_equal(ALLERGEN.POLLEN, allergens[6]);
-    assert_equal(ALLERGEN.CATS, allergens[7]);
+    assert_equal(Allergen.EGGS, allergens[0]);
+    assert_equal(Allergen.PEANUTS, allergens[1]);
+    assert_equal(Allergen.SHELLFISH, allergens[2]);
+    assert_equal(Allergen.STRAWBERRIES, allergens[3]);
+    assert_equal(Allergen.TOMATOES, allergens[4]);
+    assert_equal(Allergen.CHOCOLATE, allergens[5]);
+    assert_equal(Allergen.POLLEN, allergens[6]);
+    assert_equal(Allergen.CATS, allergens[7]);
 }
 
 list_when_no_allergen_score_parts :: () {
     allergens := list(509);
     assert_equal(7, allergens.count);
-    assert_equal(ALLERGEN.EGGS, allergens[0]);
-    assert_equal(ALLERGEN.SHELLFISH, allergens[1]);
-    assert_equal(ALLERGEN.STRAWBERRIES, allergens[2]);
-    assert_equal(ALLERGEN.TOMATOES, allergens[3]);
-    assert_equal(ALLERGEN.CHOCOLATE, allergens[4]);
-    assert_equal(ALLERGEN.POLLEN, allergens[5]);
-    assert_equal(ALLERGEN.CATS, allergens[6]);
+    assert_equal(Allergen.EGGS, allergens[0]);
+    assert_equal(Allergen.SHELLFISH, allergens[1]);
+    assert_equal(Allergen.STRAWBERRIES, allergens[2]);
+    assert_equal(Allergen.TOMATOES, allergens[3]);
+    assert_equal(Allergen.CHOCOLATE, allergens[4]);
+    assert_equal(Allergen.POLLEN, allergens[5]);
+    assert_equal(Allergen.CATS, allergens[6]);
 }
 
 list_when_no_allergen_score_parts_without_highest_valid_score :: () {
     allergens := list(257);
     assert_equal(1, allergens.count);
-    assert_equal(ALLERGEN.EGGS, allergens[0]);
+    assert_equal(Allergen.EGGS, allergens[0]);
 }
 
 #run {

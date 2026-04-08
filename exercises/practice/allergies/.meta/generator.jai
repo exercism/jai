@@ -8,7 +8,7 @@ to_test_case :: (canonical_case: CanonicalCase) -> Test {
         array_add(*lines, tprint("allergens := list(%);", to_code(score)));
         array_add(*lines, tprint("assert_equal(%, allergens.count);", canonical_case.expected.array.count));
         for canonical_case.expected.array {
-            array_add(*lines, tprint("assert_equal(ALLERGEN%, allergens[%]);", to_enum(it), it_index));
+            array_add(*lines, tprint("assert_equal(%, allergens[%]);", to_enum(it, "Allergen"), it_index));
         }
 
         return Test.{
