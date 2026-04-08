@@ -2,19 +2,17 @@
 // This file provides basic testing functionality that can be used in exercises 
 // to run the tests and print a report of which tests passed and which failed.
 
+// This macro is used to compare the expected and actual values in a test.
+// It works on Code values for the expected and actual values, which allows it to capture 
+// the code of the test assertion for reporting purposes.
 assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #caller_location) #expand {
+    // The test name is derived from the name of the test procedure, which is the caller of this macro.
     test_name := #procedure_name();
 
+    // Convert the call to this macro into its original source code form for reporting purposes.
     test_code_builder: String_Builder;
     print_expression(*test_code_builder, compiler_get_nodes(call));
     test_code := builder_to_string(*test_code_builder);
-
-    if context.skip_test && !has_build_option("-run_skipped") {
-        // We do not `#insert` the `expected` and `actual` values here, since the test is being 
-        // skipped and we don't want to evaluate them at all.
-        set_test_result(test_name, .SKIPPED, "", test_code);
-        return;
-    }
 
     expected_value := #insert expected;
     actual_value   := #insert actual;
@@ -30,11 +28,26 @@ assert_equal :: (expected: Code, actual: Code, call := #caller_code, loc := #cal
     }
 }
 
+// This macro allows skipping a test.
+// A skipped test's code will _not_ be executed.
 skip :: (code: Code) #expand {
-    context.skip_test = true;
-    defer context.skip_test = false;
+    // Do not skip the test if the '-run_skipped' build option was provided.
+    // This is used by the test runner to forcibly run _all_ tests, including skipped tests.
+    skip_test := !has_build_option("-run_skipped");
 
-    #insert code;
+    if skip_test {
+        // Get the name of the test procedure being skipped for reporting purposes
+        test_procedure_call := cast (*Code_Procedure_Call)compiler_get_nodes(code); 
+        test_procedure_identifier := cast (*Code_Ident)test_procedure_call.procedure_expression;
+        test_name := test_procedure_identifier.name;
+        set_test_result(test_name, .SKIPPED, "", "");
+         
+        // As we're skipping the test, we don't insert the original test procedure call, which prevents
+        // the test from being executed
+    } else {
+        // Don't skip the test, so insert the original test procedure call to execute the test as normal.
+        #insert code;
+    }
 }
 
 set_test_result :: inline (test_name: string, status: TestStatus, message: string, test_code: string) {
@@ -72,6 +85,8 @@ after_running_tests :: () {
     }
 }
 
+// Print the test results in the Exercism Test Runner output format:
+// https://exercism.org/docs/building/tooling/test-runners/interface#h-output-format
 write_json_test_report :: () {
     // As there is no built-in JSON support in Jai, we manually build a JSON string.
     json_builder: String_Builder;
@@ -158,7 +173,6 @@ TestRun :: struct {
 };
 
 #add_context test_run: TestRun;
-#add_context skip_test: bool;
 #add_context started_at: Apollo_Time;
 
 #import "Basic";
