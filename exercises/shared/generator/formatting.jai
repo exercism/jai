@@ -33,7 +33,24 @@ to_enum :: (str: JSON_Value, name := "") -> string {
 }
 
 to_code :: (value: string) -> string {
-    return escape_string(value);
+    builder: String_Builder;
+    init_string_builder(*builder);
+
+    append(*builder, "\"");
+
+    for value {
+        if it == {
+            case #char "\\"; append(*builder, "\\\\");
+            case #char "\""; append(*builder, "\\\"");
+            case #char "\n"; append(*builder, "\\n");
+            case #char "\r"; append(*builder, "\\r");
+            case #char "\t"; append(*builder, "\\t");
+            case; append(*builder, it);
+        }
+    }
+
+    append(*builder, "\"");
+    return builder_to_string(*builder);
 }
 
 to_code :: (value: int) -> string {
@@ -91,34 +108,13 @@ to_code :: (value: JSON_Value) -> string {
             for val, key: value.object {
                 if !first  append(*builder, ", ");
                 first = false;
-                append(*builder, escape_string(key));
+                append(*builder, to_code(key));
                 append(*builder, ": ");
                 append(*builder, to_code(val));
             }
             append(*builder, "}");
     }
 
-    return builder_to_string(*builder);
-}
-
-escape_string :: (str: string) -> string {
-    builder: String_Builder;
-    init_string_builder(*builder);
-
-    append(*builder, "\"");
-
-    for char: str {
-        if char == {
-            case #char "\\"; append(*builder, "\\\\");
-            case #char "\""; append(*builder, "\\\"");
-            case #char "\n"; append(*builder, "\\n");
-            case #char "\r"; append(*builder, "\\r");
-            case #char "\t"; append(*builder, "\\t");
-            case; append(*builder, char);
-        }
-    }
-
-    append(*builder, "\"");
     return builder_to_string(*builder);
 }
 

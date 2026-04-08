@@ -90,6 +90,8 @@ after_running_tests :: () {
 write_json_test_report :: () {
     // As there is no built-in JSON support in Jai, we manually build a JSON string.
     json_builder: String_Builder;
+    init_string_builder(*json_builder);
+
     append(*json_builder, "{\n");
     append(*json_builder, "  \"version\": 2,\n");
     append(*json_builder, tprint("  \"status\": \"%\",\n", test_status_to_string(context.test_run.status)));
@@ -97,12 +99,12 @@ write_json_test_report :: () {
 
     for context.test_run.tests {
         append(*json_builder, "    {\n");
-        append(*json_builder, tprint("      \"name\": \"%\",\n", it.name));
+        append(*json_builder, tprint("      \"name\": \"%\",\n", json_escape_string(it.name)));
         append(*json_builder, tprint("      \"status\": \"%\",\n", test_status_to_string(it.status)));
         if it.message.count > 0 {
-            append(*json_builder, tprint("      \"message\": \"%\",\n", it.message));
+            append(*json_builder, tprint("      \"message\": \"%\",\n", json_escape_string(it.message)));
         }
-        append(*json_builder, tprint("      \"test_code\": \"%\"\n", it.test_code));
+        append(*json_builder, tprint("      \"test_code\": \"%\"\n", json_escape_string(it.test_code)));
         append(*json_builder, "    }");
         if it_index < context.test_run.tests.count - 1 {
             append(*json_builder, ",");
@@ -115,6 +117,23 @@ write_json_test_report :: () {
 
     json := builder_to_string(*json_builder);
     write_entire_file("results.json", json);
+}
+
+json_escape_string :: (str: string) -> string {
+    escaped_builder: String_Builder;
+    init_string_builder(*escaped_builder);
+
+    for str {
+        if it == {
+            case #char "\""; append(*escaped_builder, "\\\"");
+            case #char "\\"; append(*escaped_builder, "\\\\");
+            case #char "\n"; append(*escaped_builder, "\\n");
+            case #char "\r"; append(*escaped_builder, "\\r");
+            case #char "\t"; append(*escaped_builder, "\\t");
+            case; append(*escaped_builder, it);
+        }
+    }
+    return builder_to_string(*escaped_builder);
 }
 
 test_status_to_string :: inline (status: TestStatus) -> string {
