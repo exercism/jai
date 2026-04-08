@@ -216,6 +216,14 @@
         "practices": [],
         "prerequisites": [],
         "difficulty": 4
+      },
+      {
+        "slug": "baffling-birthdays",
+        "name": "Baffling Birthdays",
+        "uuid": "4bb8b322-f565-4140-b656-58397cbe8e11",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 5
       }
     ]
   },
