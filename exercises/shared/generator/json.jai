@@ -148,8 +148,6 @@ parse_array :: (str: string) -> [] JSON_Value, string {
 
 parse_object :: (str: string) -> JSON_Object, string {
     result: JSON_Object;
-    init(*result);
-
     remainder := trim_left(advance(str));
 
     while remainder {

@@ -20,7 +20,7 @@ to_test_name :: (description: string) -> string {
     return to_snake_case(description);
 }
 
-build_test_file_contents :: (tests: [] Test, after_tests: string) -> string {
+build_test_file_contents :: (tests: [] Test) -> string {
     builder: String_Builder;
 
     print_to_builder(*builder, "run_tests :: () {\n");
@@ -47,10 +47,6 @@ build_test_file_contents :: (tests: [] Test, after_tests: string) -> string {
         print_to_builder(*builder, "}\n");
     }
 
-    if after_tests {
-        print_to_builder(*builder, "\n%", after_tests);
-    }
-
     print_to_builder(*builder, "\n");
     print_to_builder(*builder, "#run {\n");
     print_to_builder(*builder, "    before_running_tests();\n");
@@ -64,7 +60,7 @@ build_test_file_contents :: (tests: [] Test, after_tests: string) -> string {
     return builder_to_string(*builder);
 }
 
-run_generator :: (exercise: string, to_test_case: (canonical_case: CanonicalCase) -> Test, after_tests := "") {
+run_generator :: (exercise: string, to_test_case: (canonical_case: CanonicalCase) -> Test) {
     canonical := download_canonical_data(exercise);
 
     test_cases: [..] Test;
@@ -73,7 +69,7 @@ run_generator :: (exercise: string, to_test_case: (canonical_case: CanonicalCase
         array_add(*test_cases, test_case);
     }
 
-    contents := build_test_file_contents(test_cases, after_tests);
+    contents := build_test_file_contents(test_cases);
     write_entire_file("../tests.jai", contents);
 
     // Don't create an executable as the generator can run at compile-time
