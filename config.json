@@ -66,6 +66,14 @@
         "difficulty": 1
       },
       {
+        "slug": "isbn-verifier",
+        "name": "ISBN Verifier",
+        "uuid": "c4e3ea2f-8648-49ba-a9a5-54ba11b5c27e",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
         "slug": "leap",
         "name": "Leap",
         "uuid": "ea1a7d4f-1802-424a-a4ee-f010a1dada3b",
