@@ -1,0 +1,19 @@
+{
+  "authors": [
+    "erikschierboom"
+  ],
+  "files": {
+    "solution": [
+      "solution.jai"
+    ],
+    "test": [
+      "tests.jai"
+    ],
+    "example": [
+      ".meta/example.jai"
+    ]
+  },
+  "blurb": "A data structure that uses a single, fixed-size buffer as if it were connected end-to-end.",
+  "source": "Wikipedia",
+  "source_url": "https://en.wikipedia.org/wiki/Circular_buffer"
+}
