@@ -66,14 +66,6 @@
         "difficulty": 1
       },
       {
-        "slug": "isbn-verifier",
-        "name": "ISBN Verifier",
-        "uuid": "c4e3ea2f-8648-49ba-a9a5-54ba11b5c27e",
-        "practices": [],
-        "prerequisites": [],
-        "difficulty": 3
-      },
-      {
         "slug": "leap",
         "name": "Leap",
         "uuid": "ea1a7d4f-1802-424a-a4ee-f010a1dada3b",
@@ -125,6 +117,14 @@
         "slug": "bob",
         "name": "Bob",
         "uuid": "69a59f74-137a-413d-84ee-4e21d50f3690",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
+        "slug": "isbn-verifier",
+        "name": "ISBN Verifier",
+        "uuid": "c4e3ea2f-8648-49ba-a9a5-54ba11b5c27e",
         "practices": [],
         "prerequisites": [],
         "difficulty": 3
@@ -240,6 +240,14 @@
         "practices": [],
         "prerequisites": [],
         "difficulty": 5
+      },
+      {
+        "slug": "circular-buffer",
+        "name": "Circular Buffer",
+        "uuid": "ed824c1e-cc70-43f7-86d9-0d767cf2845e",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 6
       }
     ]
   },
