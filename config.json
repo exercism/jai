@@ -106,6 +106,14 @@
         "difficulty": 2
       },
       {
+        "slug": "resistor-color-duo",
+        "name": "Resistor Color Duo",
+        "uuid": "cc173ac5-4d92-4326-a800-0434a52ea16e",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 2
+      },
+      {
         "slug": "scrabble-score",
         "name": "Scrabble Score",
         "uuid": "3439b4b4-9ecd-4ed8-b89e-01479a7d7521",
