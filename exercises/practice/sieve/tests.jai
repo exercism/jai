@@ -1,0 +1,220 @@
+run_tests :: () {
+    no_primes_under_two();
+    skip(find_first_prime());
+    skip(find_primes_up_to_10());
+    skip(limit_is_prime());
+    skip(find_primes_up_to_1000());
+}
+
+no_primes_under_two :: () {
+    primes := primes_from_sieve(1);
+    assert_equal(0, primes.count);
+}
+
+find_first_prime :: () {
+    primes := primes_from_sieve(2);
+    assert_equal(1, primes.count);
+    assert_equal(2, primes[0]);
+}
+
+find_primes_up_to_10 :: () {
+    primes := primes_from_sieve(10);
+    assert_equal(4, primes.count);
+    assert_equal(2, primes[0]);
+    assert_equal(3, primes[1]);
+    assert_equal(5, primes[2]);
+    assert_equal(7, primes[3]);
+}
+
+limit_is_prime :: () {
+    primes := primes_from_sieve(13);
+    assert_equal(6, primes.count);
+    assert_equal(2, primes[0]);
+    assert_equal(3, primes[1]);
+    assert_equal(5, primes[2]);
+    assert_equal(7, primes[3]);
+    assert_equal(11, primes[4]);
+    assert_equal(13, primes[5]);
+}
+
+find_primes_up_to_1000 :: () {
+    primes := primes_from_sieve(1000);
+    assert_equal(168, primes.count);
+    assert_equal(2, primes[0]);
+    assert_equal(3, primes[1]);
+    assert_equal(5, primes[2]);
+    assert_equal(7, primes[3]);
+    assert_equal(11, primes[4]);
+    assert_equal(13, primes[5]);
+    assert_equal(17, primes[6]);
+    assert_equal(19, primes[7]);
+    assert_equal(23, primes[8]);
+    assert_equal(29, primes[9]);
+    assert_equal(31, primes[10]);
+    assert_equal(37, primes[11]);
+    assert_equal(41, primes[12]);
+    assert_equal(43, primes[13]);
+    assert_equal(47, primes[14]);
+    assert_equal(53, primes[15]);
+    assert_equal(59, primes[16]);
+    assert_equal(61, primes[17]);
+    assert_equal(67, primes[18]);
+    assert_equal(71, primes[19]);
+    assert_equal(73, primes[20]);
+    assert_equal(79, primes[21]);
+    assert_equal(83, primes[22]);
+    assert_equal(89, primes[23]);
+    assert_equal(97, primes[24]);
+    assert_equal(101, primes[25]);
+    assert_equal(103, primes[26]);
+    assert_equal(107, primes[27]);
+    assert_equal(109, primes[28]);
+    assert_equal(113, primes[29]);
+    assert_equal(127, primes[30]);
+    assert_equal(131, primes[31]);
+    assert_equal(137, primes[32]);
+    assert_equal(139, primes[33]);
+    assert_equal(149, primes[34]);
+    assert_equal(151, primes[35]);
+    assert_equal(157, primes[36]);
+    assert_equal(163, primes[37]);
+    assert_equal(167, primes[38]);
+    assert_equal(173, primes[39]);
+    assert_equal(179, primes[40]);
+    assert_equal(181, primes[41]);
+    assert_equal(191, primes[42]);
+    assert_equal(193, primes[43]);
+    assert_equal(197, primes[44]);
+    assert_equal(199, primes[45]);
+    assert_equal(211, primes[46]);
+    assert_equal(223, primes[47]);
+    assert_equal(227, primes[48]);
+    assert_equal(229, primes[49]);
+    assert_equal(233, primes[50]);
+    assert_equal(239, primes[51]);
+    assert_equal(241, primes[52]);
+    assert_equal(251, primes[53]);
+    assert_equal(257, primes[54]);
+    assert_equal(263, primes[55]);
+    assert_equal(269, primes[56]);
+    assert_equal(271, primes[57]);
+    assert_equal(277, primes[58]);
+    assert_equal(281, primes[59]);
+    assert_equal(283, primes[60]);
+    assert_equal(293, primes[61]);
+    assert_equal(307, primes[62]);
+    assert_equal(311, primes[63]);
+    assert_equal(313, primes[64]);
+    assert_equal(317, primes[65]);
+    assert_equal(331, primes[66]);
+    assert_equal(337, primes[67]);
+    assert_equal(347, primes[68]);
+    assert_equal(349, primes[69]);
+    assert_equal(353, primes[70]);
+    assert_equal(359, primes[71]);
+    assert_equal(367, primes[72]);
+    assert_equal(373, primes[73]);
+    assert_equal(379, primes[74]);
+    assert_equal(383, primes[75]);
+    assert_equal(389, primes[76]);
+    assert_equal(397, primes[77]);
+    assert_equal(401, primes[78]);
+    assert_equal(409, primes[79]);
+    assert_equal(419, primes[80]);
+    assert_equal(421, primes[81]);
+    assert_equal(431, primes[82]);
+    assert_equal(433, primes[83]);
+    assert_equal(439, primes[84]);
+    assert_equal(443, primes[85]);
+    assert_equal(449, primes[86]);
+    assert_equal(457, primes[87]);
+    assert_equal(461, primes[88]);
+    assert_equal(463, primes[89]);
+    assert_equal(467, primes[90]);
+    assert_equal(479, primes[91]);
+    assert_equal(487, primes[92]);
+    assert_equal(491, primes[93]);
+    assert_equal(499, primes[94]);
+    assert_equal(503, primes[95]);
+    assert_equal(509, primes[96]);
+    assert_equal(521, primes[97]);
+    assert_equal(523, primes[98]);
+    assert_equal(541, primes[99]);
+    assert_equal(547, primes[100]);
+    assert_equal(557, primes[101]);
+    assert_equal(563, primes[102]);
+    assert_equal(569, primes[103]);
+    assert_equal(571, primes[104]);
+    assert_equal(577, primes[105]);
+    assert_equal(587, primes[106]);
+    assert_equal(593, primes[107]);
+    assert_equal(599, primes[108]);
+    assert_equal(601, primes[109]);
+    assert_equal(607, primes[110]);
+    assert_equal(613, primes[111]);
+    assert_equal(617, primes[112]);
+    assert_equal(619, primes[113]);
+    assert_equal(631, primes[114]);
+    assert_equal(641, primes[115]);
+    assert_equal(643, primes[116]);
+    assert_equal(647, primes[117]);
+    assert_equal(653, primes[118]);
+    assert_equal(659, primes[119]);
+    assert_equal(661, primes[120]);
+    assert_equal(673, primes[121]);
+    assert_equal(677, primes[122]);
+    assert_equal(683, primes[123]);
+    assert_equal(691, primes[124]);
+    assert_equal(701, primes[125]);
+    assert_equal(709, primes[126]);
+    assert_equal(719, primes[127]);
+    assert_equal(727, primes[128]);
+    assert_equal(733, primes[129]);
+    assert_equal(739, primes[130]);
+    assert_equal(743, primes[131]);
+    assert_equal(751, primes[132]);
+    assert_equal(757, primes[133]);
+    assert_equal(761, primes[134]);
+    assert_equal(769, primes[135]);
+    assert_equal(773, primes[136]);
+    assert_equal(787, primes[137]);
+    assert_equal(797, primes[138]);
+    assert_equal(809, primes[139]);
+    assert_equal(811, primes[140]);
+    assert_equal(821, primes[141]);
+    assert_equal(823, primes[142]);
+    assert_equal(827, primes[143]);
+    assert_equal(829, primes[144]);
+    assert_equal(839, primes[145]);
+    assert_equal(853, primes[146]);
+    assert_equal(857, primes[147]);
+    assert_equal(859, primes[148]);
+    assert_equal(863, primes[149]);
+    assert_equal(877, primes[150]);
+    assert_equal(881, primes[151]);
+    assert_equal(883, primes[152]);
+    assert_equal(887, primes[153]);
+    assert_equal(907, primes[154]);
+    assert_equal(911, primes[155]);
+    assert_equal(919, primes[156]);
+    assert_equal(929, primes[157]);
+    assert_equal(937, primes[158]);
+    assert_equal(941, primes[159]);
+    assert_equal(947, primes[160]);
+    assert_equal(953, primes[161]);
+    assert_equal(967, primes[162]);
+    assert_equal(971, primes[163]);
+    assert_equal(977, primes[164]);
+    assert_equal(983, primes[165]);
+    assert_equal(991, primes[166]);
+    assert_equal(997, primes[167]);
+}
+
+#run {
+    before_running_tests();
+    run_tests();
+    after_running_tests();
+}
+
+#load "solution.jai";
+#load "extest.jai";
