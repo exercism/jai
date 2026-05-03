@@ -234,6 +234,14 @@
         "difficulty": 4
       },
       {
+        "slug": "secret-handshake",
+        "name": "Secret Handshake",
+        "uuid": "a4634147-9547-4c40-83b8-1db502be44a4",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 4
+      },
+      {
         "slug": "baffling-birthdays",
         "name": "Baffling Birthdays",
         "uuid": "4bb8b322-f565-4140-b656-58397cbe8e11",
