@@ -74,6 +74,14 @@
         "difficulty": 1
       },
       {
+        "slug": "resistor-color",
+        "name": "Resistor Color",
+        "uuid": "6a4b297b-b093-4b39-8b26-5b98f8e566dc",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 1
+      },
+      {
         "slug": "two-fer",
         "name": "Two-Fer",
         "uuid": "050a2565-9882-4f9c-9d08-002b800fd974",
