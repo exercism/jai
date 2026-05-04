@@ -73,7 +73,7 @@ before_running_tests :: () {
 
 after_running_tests :: () {
     if has_build_option("-json") {
-        write_json_test_report();
+        print_json_test_report();
     } else {
         print_test_report();
     }
@@ -87,7 +87,7 @@ after_running_tests :: () {
 
 // Print the test results in the Exercism Test Runner output format:
 // https://exercism.org/docs/building/tooling/test-runners/interface#h-output-format
-write_json_test_report :: () {
+print_json_test_report :: () {
     // As there is no built-in JSON support in Jai, we manually build a JSON string.
     json_builder: String_Builder;
     init_string_builder(*json_builder);
@@ -115,8 +115,7 @@ write_json_test_report :: () {
     append(*json_builder, "  ]\n");
     append(*json_builder, "}\n");
 
-    json := builder_to_string(*json_builder);
-    write_entire_file("results.json", json);
+    print(builder_to_string(*json_builder));
 }
 
 json_escape_string :: (str: string) -> string {
@@ -196,5 +195,4 @@ TestRun :: struct {
 
 #import "Basic";
 #import "Compiler";
-#import "File";
 #import "Program_Print";
