@@ -282,6 +282,14 @@
         "difficulty": 4
       },
       {
+        "slug": "sieve",
+        "name": "Sieve",
+        "uuid": "676fac46-e38e-44a4-be92-2877946f96bc",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 4
+      },
+      {
         "slug": "baffling-birthdays",
         "name": "Baffling Birthdays",
         "uuid": "4bb8b322-f565-4140-b656-58397cbe8e11",
