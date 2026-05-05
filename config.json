@@ -202,6 +202,14 @@
         "difficulty": 3
       },
       {
+        "slug": "triangle",
+        "name": "Triangle",
+        "uuid": "50b589fd-d57c-48e2-bdc5-19931680c920",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
         "slug": "isogram",
         "name": "Isogram",
         "uuid": "847735a5-6c1b-474d-8693-cc7cf36772ac",
