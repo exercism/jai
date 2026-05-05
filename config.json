@@ -106,6 +106,14 @@
         "difficulty": 2
       },
       {
+        "slug": "rna-transcription",
+        "name": "RNA Transcription",
+        "uuid": "9ac749da-cf12-4ec2-ad56-7dfd62f5abe9",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 2
+      },
+      {
         "slug": "resistor-color-duo",
         "name": "Resistor Color Duo",
         "uuid": "cc173ac5-4d92-4326-a800-0434a52ea16e",
