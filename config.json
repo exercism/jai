@@ -130,6 +130,14 @@
         "difficulty": 3
       },
       {
+        "slug": "armstrong-numbers",
+        "name": "Armstrong Numbers",
+        "uuid": "4180f1d4-5b9d-4500-abd7-8d76d99f2298",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
         "slug": "bob",
         "name": "Bob",
         "uuid": "69a59f74-137a-413d-84ee-4e21d50f3690",
@@ -218,20 +226,20 @@
         "difficulty": 3
       },
       {
-        "slug": "acronym",
-        "name": "Acronym",
-        "uuid": "be386aad-2d64-4aa7-8448-a9080cfa0538",
-        "practices": [],
-        "prerequisites": [],
-        "difficulty": 4
-      },
-      {
         "slug": "triangle",
         "name": "Triangle",
         "uuid": "50b589fd-d57c-48e2-bdc5-19931680c920",
         "practices": [],
         "prerequisites": [],
         "difficulty": 3
+      },
+      {
+        "slug": "acronym",
+        "name": "Acronym",
+        "uuid": "be386aad-2d64-4aa7-8448-a9080cfa0538",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 4
       },
       {
         "slug": "isogram",
