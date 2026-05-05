@@ -28,8 +28,23 @@ to_enum :: (str: string, name := "") -> string {
     return tprint("%.%", name, str);
 }
 
-to_enum :: (str: JSON_Value, name := "") -> string {
-    return to_enum(str.str, name);
+to_enum :: (value: JSON_Value, name := "") -> string {
+    print("value type: %\n", value.type);
+    if value.type == {
+        case .STRING; return to_enum(value.str, name);
+        case .ARRAY;
+            values: [..]string;
+
+            for value.array {
+                assert(it.type == .STRING, "Only string values are supported for enum conversion");
+                array_add(*values, to_enum(it.str, name));
+            }
+            
+            return to_code(values);
+    }
+
+    assert(false, "Unsupported type for enum conversion");
+    return "";
 }
 
 to_code :: (value: string) -> string {
