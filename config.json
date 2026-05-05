@@ -146,6 +146,14 @@
         "difficulty": 3
       },
       {
+        "slug": "binary-search",
+        "name": "Binary Search",
+        "uuid": "06dd2fc3-8d2c-4196-b8fd-5ab68c945dcf",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
         "slug": "bob",
         "name": "Bob",
         "uuid": "69a59f74-137a-413d-84ee-4e21d50f3690",
