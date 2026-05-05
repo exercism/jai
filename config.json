@@ -258,6 +258,14 @@
         "difficulty": 5
       },
       {
+        "slug": "anagram",
+        "name": "Anagram",
+        "uuid": "79ea8cd7-95e6-419b-861a-ebd56885bdd1",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 6
+      },
+      {
         "slug": "circular-buffer",
         "name": "Circular Buffer",
         "uuid": "ed824c1e-cc70-43f7-86d9-0d767cf2845e",
