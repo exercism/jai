@@ -210,9 +210,25 @@
         "difficulty": 3
       },
       {
+        "slug": "square-root",
+        "name": "Square Root",
+        "uuid": "60a2f751-cb5d-444c-94bd-42ee770004ce",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
         "slug": "sum-of-multiples",
         "name": "Sum of Multiples",
         "uuid": "07179cb2-852f-4ffd-addb-9472e04243d8",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 3
+      },
+      {
+        "slug": "triangle",
+        "name": "Triangle",
+        "uuid": "50b589fd-d57c-48e2-bdc5-19931680c920",
         "practices": [],
         "prerequisites": [],
         "difficulty": 3
@@ -224,14 +240,6 @@
         "practices": [],
         "prerequisites": [],
         "difficulty": 4
-      },
-      {
-        "slug": "triangle",
-        "name": "Triangle",
-        "uuid": "50b589fd-d57c-48e2-bdc5-19931680c920",
-        "practices": [],
-        "prerequisites": [],
-        "difficulty": 3
       },
       {
         "slug": "isogram",
