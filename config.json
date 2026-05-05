@@ -74,6 +74,14 @@
         "difficulty": 1
       },
       {
+        "slug": "resistor-color",
+        "name": "Resistor Color",
+        "uuid": "6a4b297b-b093-4b39-8b26-5b98f8e566dc",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 1
+      },
+      {
         "slug": "two-fer",
         "name": "Two-Fer",
         "uuid": "050a2565-9882-4f9c-9d08-002b800fd974",
@@ -93,6 +101,14 @@
         "slug": "eliuds-eggs",
         "name": "Eliud's Eggs",
         "uuid": "ccfc776c-88ef-49cb-9095-4024dcdf76fb",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 2
+      },
+      {
+        "slug": "resistor-color-duo",
+        "name": "Resistor Color Duo",
+        "uuid": "cc173ac5-4d92-4326-a800-0434a52ea16e",
         "practices": [],
         "prerequisites": [],
         "difficulty": 2
@@ -221,6 +237,14 @@
         "slug": "protein-translation",
         "name": "Protein Translation",
         "uuid": "2dcc4486-6d52-47cb-93fa-234b5f3b9cf1",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 4
+      },
+      {
+        "slug": "resistor-color-trio",
+        "name": "Resistor Color Trio",
+        "uuid": "3d61bcf9-49b1-4d92-b75e-3279e4653d89",
         "practices": [],
         "prerequisites": [],
         "difficulty": 4
