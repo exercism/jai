@@ -298,6 +298,14 @@
         "difficulty": 4
       },
       {
+        "slug": "house",
+        "name": "House",
+        "uuid": "7b5560e6-83d0-40cf-8111-7b6e9ed17f74",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 4
+      },
+      {
         "slug": "isogram",
         "name": "Isogram",
         "uuid": "847735a5-6c1b-474d-8693-cc7cf36772ac",
