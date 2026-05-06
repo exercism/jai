@@ -362,6 +362,14 @@
         "difficulty": 5
       },
       {
+        "slug": "twelve-days",
+        "name": "Twelve Days",
+        "uuid": "df2196b0-bd6d-4b33-a120-d55ed6dc489f",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 5
+      },
+      {
         "slug": "anagram",
         "name": "Anagram",
         "uuid": "79ea8cd7-95e6-419b-861a-ebd56885bdd1",
