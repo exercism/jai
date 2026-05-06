@@ -29,7 +29,6 @@ to_enum :: (str: string, name := "") -> string {
 }
 
 to_enum :: (value: JSON_Value, name := "") -> string {
-    print("value type: %\n", value.type);
     if value.type == {
         case .STRING; return to_enum(value.str, name);
         case .ARRAY;
