@@ -290,6 +290,14 @@
         "difficulty": 4
       },
       {
+        "slug": "food-chain",
+        "name": "Food Chain",
+        "uuid": "faa59df7-abc2-428d-bebe-f8f12f270810",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 4
+      },
+      {
         "slug": "isogram",
         "name": "Isogram",
         "uuid": "847735a5-6c1b-474d-8693-cc7cf36772ac",
