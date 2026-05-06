@@ -90,7 +90,6 @@ after_running_tests :: () {
 print_json_test_report :: () {
     // As there is no built-in JSON support in Jai, we manually build a JSON string.
     json_builder: String_Builder;
-    init_string_builder(*json_builder);
 
     append(*json_builder, "{\n");
     append(*json_builder, "  \"version\": 2,\n");
@@ -120,7 +119,6 @@ print_json_test_report :: () {
 
 json_escape_string :: (str: string) -> string {
     escaped_builder: String_Builder;
-    init_string_builder(*escaped_builder);
 
     for str {
         if it == {
