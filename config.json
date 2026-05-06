@@ -282,6 +282,14 @@
         "difficulty": 4
       },
       {
+        "slug": "bottle-song",
+        "name": "Bottle Song",
+        "uuid": "4a917426-843d-4f0f-b62c-b89506cfee24",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 4
+      },
+      {
         "slug": "isogram",
         "name": "Isogram",
         "uuid": "847735a5-6c1b-474d-8693-cc7cf36772ac",

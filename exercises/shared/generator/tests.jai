@@ -8,6 +8,7 @@ Test :: struct {
     name: string;
     body: string;
     multiline_body: []string;
+    indent_body := true;
     skip: bool;
 }
 
@@ -35,13 +36,14 @@ build_test_file_contents :: (tests: [] Test) -> string {
 
     for test: tests {
         print_to_builder(*builder, "\n% :: () {\n", test.name);
+        body_indentation := ifx test.indent_body then "    " else "";
 
         if test.multiline_body.count > 0 {
             for line: test.multiline_body {
-                print_to_builder(*builder, "    %\n", line);
+                print_to_builder(*builder, "%%\n", body_indentation, line);
             }
         } else {
-            print_to_builder(*builder, "    %\n", test.body);
+            print_to_builder(*builder, "%%\n", body_indentation, test.body);
         }
 
         print_to_builder(*builder, "}\n");
