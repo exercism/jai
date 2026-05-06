@@ -1,6 +1,5 @@
 to_test_case :: (canonical_case: CanonicalCase) -> Test {
-    _, start_verse := get_property(canonical_case.input, "startVerse");
-    _, end_verse := get_property(canonical_case.input, "endVerse");
+    _, strings := get_property(canonical_case.input, "strings");
 
     lines: [..] string;
     array_add(*lines, "    EXPECTED :: #string DONE");
@@ -8,7 +7,7 @@ to_test_case :: (canonical_case: CanonicalCase) -> Test {
         array_add(*lines, it.str);
     }
     array_add(*lines, "DONE");
-    array_add(*lines, tprint("    assert_equal(EXPECTED, recite(%, %));", to_code(start_verse), to_code(end_verse)));
+    array_add(*lines, tprint("    assert_equal(EXPECTED, recite(%));", to_code(strings)));
 
     return Test.{
         name = to_test_name(canonical_case.description_path),
@@ -18,7 +17,7 @@ to_test_case :: (canonical_case: CanonicalCase) -> Test {
     };
 }
 
-#run run_generator("twelve-days", to_test_case);
+#run run_generator("proverb", to_test_case);
 
 #import "Basic";
 #import,dir "../../../shared/generator";
