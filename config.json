@@ -306,6 +306,14 @@
         "difficulty": 4
       },
       {
+        "slug": "proverb",
+        "name": "Proverb",
+        "uuid": "dff7f2e7-f404-4a82-8f46-05f22189a97d",
+        "practices": [],
+        "prerequisites": [],
+        "difficulty": 4
+      },
+      {
         "slug": "resistor-color-trio",
         "name": "Resistor Color Trio",
         "uuid": "3d61bcf9-49b1-4d92-b75e-3279e4653d89",

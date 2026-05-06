@@ -1,5 +1,4 @@
 to_test_case :: (canonical_case: CanonicalCase) -> Test {
-    expected := canonical_case.expected.str;
     _, start_bottles := get_property(canonical_case.input, "startBottles");
     _, takedown := get_property(canonical_case.input, "takeDown");
 
