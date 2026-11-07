@@ -1,0 +1,14 @@
+most_common_word :: (text: string) -> string {
+    counts: Table(string, int);
+    best := "";
+    best_count := 0;
+    for word: split(to_lower_copy(text), " ") {
+        count := find_or_add(*counts, word);
+        count.* += 1;
+        if count.* > best_count {
+            best = word;
+            best_count = count.*;
+        }
+    }
+    return tprint("\"%\" appears % times", best, best_count);
+}
